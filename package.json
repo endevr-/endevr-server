@@ -19,6 +19,9 @@
   "homepage": "https://github.com/endevr-/endevr-server",
   "dependencies": {
     "body-parser": "^1.9.2",
-    "express": "^4.10.1"
+    "bookshelf": "^0.7.9",
+    "express": "^4.10.1",
+    "knex": "^0.7.3",
+    "pg": "^3.6.2"
   }
 }
