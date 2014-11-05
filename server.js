@@ -14,6 +14,8 @@ app.use(bodyParser.json());
 app.use(allowCrossDomain);
 require('./routes/routes')(app);
 
+var bookshelf = require('./config/db');
+
 app.listen(port);
 console.log('server running on port: ' + port);
 exports = module.exports = app;
