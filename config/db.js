@@ -9,7 +9,7 @@ knex.schema.hasTable('developers').then(function(exists) {
       t.string('linkedin').notNullable();
       t.string('github').notNullable();
       t.string('auth').notNullable();
-      t.string('lastcard').notNullable();
+      t.integer('lastcard').notNullable();
     }).then(function() {
       console.log('created developers table.');
     });
@@ -25,6 +25,9 @@ knex.schema.hasTable('employers').then(function(exists) {
       t.string('name').notNullable();
       t.string('location').notNullable();
       t.string('image');
+      t.string('contact_person');
+      t.string('contact_email');
+      t.string('contact_phone');
     }).then(function() {
       console.log('created employers table.');
     });
@@ -42,7 +45,7 @@ knex.schema.hasTable('positions').then(function(exists) {
       t.string('image');
       t.string('required').notNullable();
       t.string('prefered').notNullable();
-      t.string('lastcard').notNullable();
+      t.integer('lastcard').notNullable();
     }).then(function() {
       console.log('created positions table.');
     });
@@ -57,6 +60,8 @@ knex.schema.hasTable('matches').then(function(exists) {
       t.increments('id').primary().notNullable;
       t.integer('developers_id').references('id').inTable('developers');
       t.integer('employers_id').references('id').inTable('employers');
+      t.boolean('developer_interest').defaultTo(null);
+      t.boolean('employer_interest').defaultTo(null);
     }).then(function() {
       console.log('created matches table.');
     });
