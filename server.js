@@ -1,7 +1,10 @@
 var express        = require('express');
 var app            = express();
 var bodyParser     = require('body-parser');
-var port       = process.env.PORT || 9000;
+var passport       = require('passport');
+var port           = process.env.PORT || 9000;
+
+app.use(passport.initialize());
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
