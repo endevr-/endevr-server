@@ -12,7 +12,7 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(bodyParser.json());
 app.use(allowCrossDomain);
-require('./routes/routes')(app);
+require('./routes/index')(app);
 
 var bookshelf = require('./config/db');
 
