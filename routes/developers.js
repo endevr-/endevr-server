@@ -11,11 +11,13 @@ module.exports = function(app) {
   app.post('/api/developers', function(req, res, next) {
     console.log('Body: ', req.body);
     new Developer({
-      name: req.body.name,
-      location: req.body.location,
-      linkedin: req.body.linkedin,
-      github: req.body.github,
-      auth: req.body.auth,
+      fname: req.body.data.firstName;
+      lname: req.body.data.lastName,
+      photo_url: req.body.data.pictureUrl;
+      location: req.body.data.location.name,
+      linkedin: req.body.data.id,
+      github: req.body.github || 'N/A',
+      auth: req.body.auth || 'N/A',
       lastcard: req.body.lastcard || 0
     })
     .save().then(function(developer){

@@ -4,8 +4,10 @@ knex.schema.hasTable('developers').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('developers', function(t) {
       t.increments('id').primary().notNullable;
-      t.string('name').notNullable();
+      t.string('fname').notNullable();
+      t.string('lname').notNullable();
       t.string('location').notNullable();
+      t.string('photo_url');
       t.string('linkedin').notNullable();
       t.string('github').notNullable();
       t.string('auth').notNullable();
