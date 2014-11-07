@@ -11,15 +11,19 @@ module.exports = function(app) {
   app.post('/api/developers', function(req, res, next) {
     console.log('Body: ', req.body);
     new Developer({
-      name: req.body.name
+      name: req.body.name,
+      location: req.body.location,
+      linkedin: req.body.linkedin,
+      github: req.body.github,
+      auth: req.body.auth,
+      lastcard: req.body.lastcard || 0
     })
     .save().then(function(developer){
-      res.send('return stuff here');
+      res.send(req.body.name);
     }).catch(function(error) {
       console.log(error);
       res.send('An error occured', error);
     });
-    next();
   });
 
   // List of all cards for developers

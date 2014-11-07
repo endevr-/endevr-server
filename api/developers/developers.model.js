@@ -8,3 +8,5 @@ var Developer = bookshelf.Model.extend({
   }
 
 });
+
+module.exports = Developer;
