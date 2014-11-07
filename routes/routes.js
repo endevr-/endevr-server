@@ -9,22 +9,12 @@ app.all('*', function(req, res, next) {
  });
 
 // Default route
-  app.get('/', function(req, res) {
+  app.get('/', function(req, res, next) {
     res.send('endevr');
   });
 
-// List of all employers
-  app.get('/api/employers', function(req, res) {
-    res.send({name: 'hooli', hiring: 'yes' });
-  });
-
-// List of all developersx
-  app.get('/api/developers', function(req, res) {
-    res.send({languages: 'JavaScript, HTML, CSS', looking: 'yes' });
-  });
-
 // Wildcard route
-  app.get('*', function(req, res) {
+  app.get('*', function(req, res, next) {
     res.send('404 - Not Found')
   })
 
