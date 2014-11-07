@@ -11,6 +11,9 @@ module.exports = function(app) {
   app.post('/api/developers', function(req, res, next) {
     console.log('Body: ', req.body);
 
+// Check if the service is LinkedIn
+  if (req.body.service === 'LinkedIn'){
+
     var skillSet = [];
     var educationSet = [];
     var positionSet = [];
@@ -59,6 +62,13 @@ module.exports = function(app) {
       console.log(error);
       res.send('An error occured', error);
     });
+
+// Check if the service is GitHub
+  } else if(req.body.service === 'GitHub'){
+    
+    console.log(req.body);
+  
+  }
 
   });
 
