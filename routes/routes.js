@@ -36,7 +36,7 @@ var getOauthToken = function(req, res, next){
   console.log('Inside OAUTH - userToken: ', userToken);
   var server_token = jwt.sign({})+ secret+ 43829;
   console.log('Inside OAUTH - JWT: ', server_token);
-  res.redirect('?oauth_token=' + server_token + '?userID=' + 1 );
+  res.redirect('?oauth_token=' + server_token + '&userID=' + 1 );
 }
 
 // Default route
