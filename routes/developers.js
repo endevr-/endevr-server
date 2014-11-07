@@ -13,16 +13,16 @@ module.exports = function(app) {
 
     var skillSet = [];
     var educationSet = [];
-    var positionsSet = [];
+    var positionSet = [];
 
     for (var i=0; i< req.body.data.skills.values.length; i++){
-      skillVals.push(req.body.data.skills.values[i].skill.name);
+      skillSet.push(req.body.data.skills.values[i].skill.name);
     }
 
     for (var i=0; i< req.body.data.educations.values.length; i++){
       educationSet.push({
           school: req.body.data.educations.values[i].schoolName,
-          year: req.body.data.educations.values[i].endDate.year,
+          // year: req.body.data.educations.values[i].endDate.year,
           degree: req.body.data.educations.values[i].degree,
           field: req.body.data.educations.values[i].fieldOfStudy
         });
@@ -31,10 +31,10 @@ module.exports = function(app) {
     for (var i=0; i< req.body.data.positions.values.length; i++){
       positionSet.push({
           company: req.body.data.positions.values[i].company.name,
-          start: req.body.data.positions.values[i].startDate.month
-          + '/' + req.body.data.positions.values[i].startDate.year || '',
-          end: req.body.data.positions.values[i].endDate.month 
-          + '/' + req.body.data.positions.values[i].endDate.year || '',
+          //Add logic here to include Month in start and end dates
+          //Need to handle edge cases where those values aren't provided
+          // start: req.body.data.positions.values[i].startDate.year || '',
+          // end: req.body.data.positions.values[i].endDate.year || '',
           title: req.body.data.positions.values[i].title,
           summary: req.body.data.positions.values[i].summary,
         });
@@ -46,7 +46,8 @@ module.exports = function(app) {
       photo_url: req.body.data.pictureUrl,
       location: req.body.data.location.name,
       skills: skillSet,
-      education: educationSet;
+      positions: positionSet,
+      education: educationSet,
       linkedin: req.body.data.id,
       github: req.body.github || 'N/A',
       auth: req.body.auth || 'N/A',

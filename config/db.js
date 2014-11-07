@@ -8,8 +8,9 @@ knex.schema.hasTable('developers').then(function(exists) {
       t.string('lname').notNullable();
       t.string('location').notNullable();
       t.string('photo_url');
-      t.string('skills');
-      t.stirng('education');
+      t.string('skills', 10000);
+      t.string('education', 10000);
+      t.string('positions', 10000);
       t.string('linkedin').notNullable();
       t.string('github').notNullable();
       t.string('auth').notNullable();
