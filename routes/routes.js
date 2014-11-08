@@ -38,6 +38,7 @@ passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
 
+// what is this used for?
 var secret = 'keyboardCat'
 
 var getOauthToken = function(req, res, next){
@@ -74,6 +75,41 @@ var getOauthToken = function(req, res, next){
   // invokes the endevr created strategy to create a jwt
   // and the jwt gets sent to the client
   app.get('/auth/linkedin/callback', getOauthToken);
+
+/****************************************
+ *********** GITHUB *********************
+ ****************************************/
+
+var GitHubStrategy = require('passport-github').Strategy;
+
+passport.use(new GitHubStrategy({
+  clientID: 'd228adcb4ead3cd56858',
+  clientSecret: '0cb1bbb292a4f51dedc35565d855dd48ccf5b8f3',
+  callbackURL: "http://localhost:9000/auth/github/callback",
+  scope: ['user', 'repo', 'gist', 'read:org'],
+
+  // callback function will be ran once authentication is successful
+
+  }, function(accessToken, refreshToken, profile, done) {
+    console.log('GitHub Profile: ', profile);
+    process.nextTick(function () {
+      //returns github profile
+      return done(null, profile);
+    });
+}));
+
+var getOauthTokenGH = function(req, res, next){
+  var userToken = req.query['oauth_token'];
+  var server_token = jwt.sign({foo: 'bar'}, 'lalala');
+  console.log('Just before redirect');
+  res.redirect('?oauth_token=' + server_token + '&userId=' + 1 );
+}
+
+app.get('/auth/github', passport.authenticate('github', {state: 'SOME STATE'}));
+app.get('/auth/github/callback', passport.authenticate('github', {state: 'SOME STATE'}));
+app.get('/auth/github/callback', getOauthTokenGH);
+
+
 
 // Wildcard route
   app.get('*', function(req, res, next) {
