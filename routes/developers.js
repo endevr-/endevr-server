@@ -73,14 +73,21 @@ module.exports = function(app) {
 
   });
 
+
+  // This is off the assumption that we have obtained possible companies
+  // from the database that the developer hasn't made a decision on.
+  var possibleCards = [];
+
+  for (var index = 0; index < 50; index++) {
+    var company = {};
+    company.name = 'company #'+index;
+    company.image = 'http://www.farmvillefreak.com/farmville_images/facebook_farmville_freak_lobster_corgi_icon.png';
+    possibleCards.push(company);
+  }
+
   // List of all cards for developers
   app.get('/api/developers/:id/cards', function(req, res, next) {
-    res.send([{name: 'hooli', image: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSk9KBgQU_9o0KbYEVrtPKxzlpMTRuieqR5l8AWXAm5Wr7P00fnyw'},
-              {name: 'google', image: 'https://www.google.com/images/srpr/logo11w.png' },
-              {name: 'facebook', image: 'https://pbs.twimg.com/profile_images/3513354941/24aaffa670e634a7da9a087bfa83abe6_400x400.png' },
-              {name: 'walmart', image: 'https://img.grouponcdn.com/coupons/svWS786jtP7X3Y2JHsBTRQ/walmart_com-500x500' },
-              {name: 'hack reactor', image: 'https://jlau-bucket-1.s3.amazonaws.com/uploads/topic/image/14/hack_reactor.png' }]
-            );
+    res.send(possibleCards);
   });
 
 
