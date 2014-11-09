@@ -18,7 +18,8 @@ app.all('*', function(req, res, next) {
 
 // Wildcard route
   app.get('*', function(req, res, next) {
-    res.send('404 - Not Found')
+    res.status(404)
+       .send('404 - Not Found');
   })
 
 };

@@ -5,7 +5,7 @@ var express = require('express');
 var endevrServer = express();
 
 endevrServer.use(bodyParser.json());
-require('./../routes/index')(endevrServer);
+require('./../../routes/index')(endevrServer);
 
 
 describe('GET /api/developers/', function() {

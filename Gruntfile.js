@@ -54,6 +54,6 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
-  grunt.registerTask('test', ['jshint', 'mochaTest', 'nodemon'] );
+  grunt.registerTask('test', ['jshint', 'mochaTest', /*'nodemon'*/] );
 
 };
