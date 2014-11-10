@@ -9,6 +9,10 @@ require('./../../routes/index')(endevrServer);
 
 describe('GET', function() {
 
+  //
+  //  Normal Endpoints
+  //
+
   describe('/', function() {
 
     it('should return "endevr"', function(done) {
@@ -35,6 +39,10 @@ describe('GET', function() {
 
   });
 
+  //
+  //  API Endpoint for Developers
+  //
+
   describe('/api/developers', function() {
 
     var responseHARDCODED = { languages: 'JavaScript, HTML, CSS', looking: 'yes' };
@@ -45,7 +53,7 @@ describe('GET', function() {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
-        .end(function(req, res) {
+        .end(function(err, res) {
           should.exist(res.body);
           done();
         });
@@ -59,6 +67,10 @@ describe('GET', function() {
     });
 
   });
+
+  //
+  //  API Endpoint for Developers
+  //
 
   describe('/api/developers/:id/cards', function() {
 
@@ -74,7 +86,7 @@ describe('GET', function() {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
-        .end(function(req, res) {
+        .end(function(err, res) {
           should.exist(res.body);
           done();
         });
@@ -85,7 +97,10 @@ describe('GET', function() {
         .get('/api/developers/1/cards')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
-        .expect(responseHARDCODED, done);
+        .end(function(err, res) {
+          res.body.should.have.length(50);
+          done();
+        });
     });
   });
 
@@ -99,7 +114,7 @@ describe('GET', function() {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
-        .end(function(req, res) {
+        .end(function(err, res) {
           should.exist(res.body);
           done();
         });
@@ -128,7 +143,7 @@ describe('GET', function() {
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
-        .end(function(req, res) {
+        .end(function(err, res) {
           should.exist(res.body);
           done();
         });
