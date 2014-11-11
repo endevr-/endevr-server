@@ -1,5 +1,5 @@
-var passport = require('passport');
-var jwt = require('jsonwebtoken');
+var passport  = require('passport');
+var jwt       = require('jsonwebtoken');
 var Developer = require('../api/developers/developers.model');
 var profileData;
 
@@ -12,9 +12,7 @@ passport.use(new LinkedInStrategy({
   clientSecret: 'T5nt3O8QEsZXY8vR',
   callbackURL: "http://localhost:9000/auth/linkedin/callback",
   scope: ['r_emailaddress', 'r_fullprofile'],
-
   // callback function will be ran once authentication is successful
-
   }, function(accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
       //returns linkedin profile
@@ -34,61 +32,56 @@ passport.deserializeUser(function(obj, done) {
 var getOauthToken = function(req, res, next){
   var userToken = req.query.oauth_token;
   var server_token = jwt.sign({foo: 'bar'}, 'lalala');
-  // this where we *SHOULD* store the user and corresponding oAuth tokens
-  // in the database
-        new Developer({'linkedin': profileData.id})
-        .fetch()
-        .then(function(developer){
-          if(developer){
-            console.log('user already exists: ', {id: developer.id});
-            res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id ); 
-          } else {  
 
-              profile = profileData._json;
+  new Developer({'linkedin': profileData.id})
+  .fetch()
+  .then(function(developer){
+    if(developer){
+      console.log('user already exists: ', {id: developer.id});
+      res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id ); 
+    } else {  
 
-              var skills = {};
-              if(profile.skills !== undefined){
-                for(var i=0; i<profile.skills.values.length; i++){
-                  skills[i] = profile.skills.values[i].skill.name;
-                }
-              }
-              var education = {};
-              if(profile.educations !== undefined){
-                for(var i=0; i<profile.educations.values.length; i++){
-                  skills[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
-                }
-              }
+        profile = profileData._json;
 
-              new Developer({
-              fname: profile.firstName,
-              lname: profile.lastName,
-              location: profile.location.name,
-              linkedin_url: profile.publicProfileUrl,
-              photo_url: profile.pictureUrl,
-              skills: skills,
-              education: education,
-              positions: 'places',
-              linkedin: profile.id,
-              github: null,
-              auth: 'what',
-              lastcard: '0'
-            })
-            .save().then(function(developer){
-              console.log('SAVED!');
-              res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id );
-            }).catch(function(error) {
-              console.log(error);
-              res.send('An error occured', error);
-            });
+        var skills = {};
+        if(profile.skills !== undefined){
+          for(var i=0; i<profile.skills.values.length; i++){
+            skills[i] = profile.skills.values[i].skill.name;
           }
-      });
+        }
+        var education = {};
+        if(profile.educations._total !== 0){
+          for(var i=0; i<profile.educations.values.length; i++){
+            skills[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
+          }
+        }
 
+        new Developer({
+        fname: profile.firstName,
+        lname: profile.lastName,
+        location: profile.location.name,
+        linkedin_url: profile.publicProfileUrl,
+        photo_url: profile.pictureUrl,
+        skills: skills,
+        education: education,
+        positions: 'places',
+        linkedin: profile.id,
+        github: null,
+        auth: 'what',
+        lastcard: '0'
+      })
+      .save().then(function(developer){
+        console.log('SAVED!');
+        res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id );
+      }).catch(function(error) {
+        console.log(error);
+        res.send('An error occured', error);
+      });
+    }
+});
   // is the full URL === http://localhost:9000/auth/linkedin/callback/?oauth_token=PLACEHOLDER&userId=PLACEHOLDER ?
   // res.redirect('?oauth_token=' + server_token + '&userId=' + 1 );
 }
-
-// Linkedin route
-
   // the route we direct users to when we want them to authenticate via linked in
   // i'm assuming that the this returns the URL that's needed by the client to provide
   // a way for the user to authenticate. (the URL contains a temporary oAuth token)
