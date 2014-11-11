@@ -3,18 +3,32 @@ var knex = require('./knex')
 knex.schema.hasTable('developers').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('developers', function(t) {
-      t.increments('id').primary().notNullable;
-      t.string('fname').notNullable();
-      t.string('lname').notNullable();
-      t.string('location').notNullable();
+      t.increments('id').primary();
+      //linkedin
+      t.string('fname');
+      t.string('lname');
+      t.string('location');
+      t.string('linkedin_url');
       t.string('photo_url');
-      t.string('skills', 10000);
-      t.string('education', 10000);
+      t.json('skills');
+      t.json('education');
       t.string('positions', 10000);
-      t.string('linkedin').notNullable();
-      t.string('github').notNullable();
-      t.string('auth').notNullable();
-      t.integer('lastcard').notNullable();
+      //github
+      t.string('github_url');
+      t.string('github_photo');
+      t.string('github_blog');
+      t.string('hireable');
+      t.string('public_repos');
+      t.string('total_private_repos');
+      t.string('followers');
+      t.string('following');
+      t.string('created_at');
+      t.string('updated_at');
+      t.string('public_gists');
+      t.string('linkedin');
+      t.string('github');
+      t.string('auth');
+      t.integer('lastcard');
     }).then(function() {
       // console.log('created developers table.');
     });
