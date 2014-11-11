@@ -33,9 +33,9 @@ var getOauthToken = function(req, res, next){
   new Developer({'id': userId})
     .fetch()
       .then(function(developer){
-        console.log('FOUND IT BREH: ', developer);
+        console.log('found user: ', developer);
       }).catch(function(error) {
-          console.log('DID NOT FIND IT BREH');
+          console.log('user not found');
          });
 
   res.redirect('?oauth_token=' + server_token + '&userId=' + 1 );

@@ -34,32 +34,28 @@ passport.deserializeUser(function(obj, done) {
 var getOauthToken = function(req, res, next){
   var userToken = req.query.oauth_token;
   var server_token = jwt.sign({foo: 'bar'}, 'lalala');
-  console.log('Skills: ', profileData._json.educations.values[0].schoolName, ' - ', profileData._json.educations.values[0].degree);
   // this where we *SHOULD* store the user and corresponding oAuth tokens
   // in the database
         new Developer({'linkedin': profileData.id})
         .fetch()
         .then(function(developer){
           if(developer){
-            console.log('already here!', {id: developer.id});
+            console.log('user already exists: ', {id: developer.id});
             res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id ); 
           } else {  
 
               profile = profileData._json;
-              console.log(profile);
 
               var skills = {};
               if(profile.skills !== undefined){
                 for(var i=0; i<profile.skills.values.length; i++){
                   skills[i] = profile.skills.values[i].skill.name;
-                  console.log(skills);
                 }
               }
               var education = {};
               if(profile.educations !== undefined){
                 for(var i=0; i<profile.educations.values.length; i++){
                   skills[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
-                  console.log(education);
                 }
               }
 
