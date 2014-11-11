@@ -4,7 +4,6 @@ var Developer = require('../api/developers/developers.model');
 var profileData;
 
 module.exports = function(app) {
-var stuff = false;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
 passport.use(new LinkedInStrategy({
