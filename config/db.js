@@ -7,12 +7,13 @@ knex.schema.hasTable('developers').then(function(exists) {
       t.string('fname').notNullable();
       t.string('lname').notNullable();
       t.string('location').notNullable();
+      t.string('linkedin_url');
       t.string('photo_url');
-      t.string('skills', 10000);
-      t.string('education', 10000);
+      t.json('skills');
+      t.json('education');
       t.string('positions', 10000);
       t.string('linkedin').notNullable();
-      t.string('github').notNullable();
+      t.string('github');
       t.string('auth').notNullable();
       t.integer('lastcard').notNullable();
     }).then(function() {

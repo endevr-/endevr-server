@@ -1,8 +1,10 @@
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
+var Developer = require('../api/developers/developers.model');
+var profileData;
 
 module.exports = function(app) {
-
+var stuff = false;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
 passport.use(new LinkedInStrategy({
@@ -14,9 +16,9 @@ passport.use(new LinkedInStrategy({
   // callback function will be ran once authentication is successful
 
   }, function(accessToken, refreshToken, profile, done) {
-    console.log('Profile: ', profile);
     process.nextTick(function () {
       //returns linkedin profile
+      profileData = profile;
       return done(null, profile);
     });
 }));
@@ -32,14 +34,61 @@ passport.deserializeUser(function(obj, done) {
 var getOauthToken = function(req, res, next){
   var userToken = req.query.oauth_token;
   var server_token = jwt.sign({foo: 'bar'}, 'lalala');
-  // console.log('Inside OAUTH - JWT: ', server_token);
-  console.log('Just before redirect');
-
+  console.log('Skills: ', profileData._json.educations.values[0].schoolName, ' - ', profileData._json.educations.values[0].degree);
   // this where we *SHOULD* store the user and corresponding oAuth tokens
   // in the database
+        new Developer({'linkedin': profileData.id})
+        .fetch()
+        .then(function(developer){
+          if(developer){
+            console.log('already here!', {id: developer.id});
+            res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id ); 
+          } else {  
+
+              profile = profileData._json;
+              console.log(profile);
+
+              var skills = {};
+              if(profile.skills !== undefined){
+                for(var i=0; i<profile.skills.values.length; i++){
+                  skills[i] = profile.skills.values[i].skill.name;
+                  console.log(skills);
+                }
+              }
+              var education = {};
+              if(profile.educations !== undefined){
+                for(var i=0; i<profile.educations.values.length; i++){
+                  skills[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
+                  console.log(education);
+                }
+              }
+
+              new Developer({
+              fname: profile.firstName,
+              lname: profile.lastName,
+              location: profile.location.name,
+              linkedin_url: profile.publicProfileUrl,
+              photo_url: profile.pictureUrl,
+              skills: skills,
+              education: education,
+              positions: 'places',
+              linkedin: profile.id,
+              github: null,
+              auth: 'what',
+              lastcard: '0'
+            })
+            .save().then(function(developer){
+              console.log('SAVED!');
+              res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id );
+            }).catch(function(error) {
+              console.log(error);
+              res.send('An error occured', error);
+            });
+          }
+      });
 
   // is the full URL === http://localhost:9000/auth/linkedin/callback/?oauth_token=PLACEHOLDER&userId=PLACEHOLDER ?
-  res.redirect('?oauth_token=' + server_token + '&userId=' + 1 );
+  // res.redirect('?oauth_token=' + server_token + '&userId=' + 1 );
 }
 
 // Linkedin route

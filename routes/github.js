@@ -1,5 +1,7 @@
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
+var Developer = require('../api/developers/developers.model');
+var profileData;
 
 module.exports = function(app) {
 
@@ -17,14 +19,25 @@ passport.use(new GitHubStrategy({
     console.log('GitHub Profile: ', profile);
     process.nextTick(function () {
       //returns github profile
+      profileData = profile;
       return done(null, profile);
     });
 }));
 
 var getOauthToken = function(req, res, next){
   var userToken = req.query.oauth_token;
+  var userId = req.query['userId'];
+  var userToken = req.query['oauth_token'];
   var server_token = jwt.sign({foo: 'bar'}, 'lalala');
-  console.log('Just before redirect');
+  
+  new Developer({'id': userId})
+    .fetch()
+      .then(function(developer){
+        console.log('FOUND IT BREH: ', developer);
+      }).catch(function(error) {
+          console.log('DID NOT FIND IT BREH');
+         });
+
   res.redirect('?oauth_token=' + server_token + '&userId=' + 1 );
 }
 
