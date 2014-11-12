@@ -30,7 +30,7 @@ passport.deserializeUser(function(obj, done) {
 
 var getOauthToken = function(req, res, next){
   var userToken = req.query.oauth_token;
-  var server_token = jwt.sign({foo: userId}, 'lalala'); 
+  var server_token = jwt.sign({foo: 'bar'}, 'lalala'); 
 
   new Developer({'linkedin': profileData.id})
   .fetch()
