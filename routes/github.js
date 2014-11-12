@@ -25,9 +25,8 @@ passport.use(new GitHubStrategy({
 
 var getOauthToken = function(req, res, next){
   var userToken = req.query.oauth_token;
-  var userToken = req.query['oauth_token'];
   var server_token = jwt.sign({foo: 'bar'}, 'lalala'); //potentially remove
-  
+
   new Developer({id: userData})
     .fetch()
       .then(function(developer){

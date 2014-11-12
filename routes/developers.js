@@ -1,44 +1,6 @@
+var jwt       = require('jsonwebtoken');
 var Developer = require('../api/developers/developers.model');
-var jwt = require('jsonwebtoken');
-
-var verifyJwt = function(req, res, next) {
-  var token = req.query.oauth_token;
-  var usertype = req.query.usertype;
-  console.log('token: ' + token);
-  console.log('type: ' + usertype);
-
-  if ( token && usertype ) {
-
-    if (usertype === 'dev') {
-
-      new Developer({ auth: token })
-        .fetch()
-        .then(function(developer) {
-
-          if (developer) {
-
-            jwt.verify(token, 'lalala', function(err, decoded) {
-              if (err) { res.redirect('/unauthorized'); }
-
-                if (decoded.foo === 'bar') {
-                  next();
-                } else {
-                  res.redirect('/unauthorized');
-                }
-
-            });
-
-          } else {
-            res.redirect('/unauthorized');
-          }
-        });
-    } else {
-      //employer logic
-    }
-  } else {
-    res.redirect('/unauthorized');
-  }
-};
+var verifyJwt = require('./../config/jwtValidation.js');
 
 module.exports = function(app) {
 
@@ -126,7 +88,7 @@ module.exports = function(app) {
   }
 
   // List of all cards for developers
-  app.get('/api/developers/:id/cards', verifyJwt,function(req, res, next) {
+  app.get('/api/developers/:id/cards', verifyJwt, function(req, res, next) {
     res.send(possibleCards);
   });
 
