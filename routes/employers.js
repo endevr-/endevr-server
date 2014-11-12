@@ -13,6 +13,12 @@ module.exports = function(app) {
               {name: 'Adam', image: 'http://static8.depositphotos.com/1499637/979/v/950/depositphotos_9794386-Trekking-boy..jpg' }, 
               {name: 'BATMAN!', image: 'http://static.comicvine.com/uploads/original/11113/111136107/4058802-6025115082-31152.jpg' }]
             );
-  });  
+  });
+
+  app.post('/emplogin', function(req, res, next){
+    console.log(req.body.email);
+    console.log(req.body.password);
+    console.log(req.body.company);
+  });
 
 };
