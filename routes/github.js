@@ -1,5 +1,5 @@
-var passport = require('passport');
-var jwt = require('jsonwebtoken');
+var passport  = require('passport');
+var jwt       = require('jsonwebtoken'); //potentially remove
 var Developer = require('../api/developers/developers.model');
 var profileData;
 var userData;
@@ -13,9 +13,7 @@ passport.use(new GitHubStrategy({
   clientSecret: '0cb1bbb292a4f51dedc35565d855dd48ccf5b8f3',
   callbackURL: "http://localhost:9000/auth/github/callback",
   scope: ['user', 'repo', 'gist', 'read:org'],
-
   // callback function will be ran once authentication is successful
-
   }, function(accessToken, refreshToken, profile, done) {
     console.log('GitHub Profile: ', profile);
     process.nextTick(function () {
@@ -27,12 +25,9 @@ passport.use(new GitHubStrategy({
 
 var getOauthToken = function(req, res, next){
   var userToken = req.query.oauth_token;
-  // var userId = req.query['userId'];
   var userToken = req.query['oauth_token'];
-  var server_token = jwt.sign({foo: 'bar'}, 'lalala');
+  var server_token = jwt.sign({foo: 'bar'}, 'lalala'); //potentially remove
   
-  // console.log(profileData);
-  console.log('USER DATA: ', userData);
   new Developer({id: userData})
     .fetch()
       .then(function(developer){
@@ -43,9 +38,6 @@ var getOauthToken = function(req, res, next){
             github_photo: profileData.avatar_url,
             github_blog: profileData.blog,
             hireable: profileData.hireable,
-            public_repos: profileData.public_repos,
-            total_private_repos: profileData.total_private_repos,
-            followers: profileData.followers,
             following: profileData.following,
             created_at: profileData.created_at,
             updated_at: profileData.updated_at,
@@ -57,7 +49,7 @@ var getOauthToken = function(req, res, next){
           .then(function(developer){
             console.log('SAVED!');
             console.log(developer);
-            res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id );
+            res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id + '&userType=dev');
           }).catch(function(error){
             console.log(error);
             res.send('An error occured', error);
@@ -65,13 +57,7 @@ var getOauthToken = function(req, res, next){
         } else {
           console.log('user not found');
         }
-
-      // }).catch(function(error) {
-      //     console.log('user not found');
-      //    });
-
-  // res.redirect('?oauth_token=' + server_token + '&userId=' + 1 );
-});
+  });
 }
 
 app.get('/auth/github', function(req, res, next){ userData = req.query['userId']; next();});
