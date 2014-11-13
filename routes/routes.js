@@ -10,7 +10,7 @@ module.exports = function(app) {
 
   // Default route
   app.get('/', function(req, res, next) {
-    res.send('../public/index.html');
+    res.sendfile('../public/index.html');
   });
 
   app.get('/unauthorized', function(req, res, next) {
