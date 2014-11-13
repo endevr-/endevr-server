@@ -32,8 +32,9 @@ module.exports = function(app) {
 
   // Employer Login
   app.post('/api/employers/login', function(req, res, next) {
+    var email = req.body.email.toLowerCase();
     new Employer({
-      email: req.body.email
+      email: email
     }).fetch().then(function(employer) {
       if (!employer) {
         res.send('Invalid username.');
@@ -50,13 +51,15 @@ module.exports = function(app) {
 
   // Create Employer
   app.post('/api/employers/new', function(req, res, next) {
+    var email = req.body.email.toLowerCase();
+    console.log(email);
     new Employer({
-      email: req.body.email
+      email: email
     }).fetch().then(function(employer) {
       if (!employer) {
         bcrypt.hash(req.body.password, null, null, function(err, hash) {
           new Employer({
-            email: req.body.email,
+            email: email,
             password: hash
           }).save().then(function(employer) {
             res.send({id: employer.id});
