@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/endevr-/endevr-server",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.9.2",
     "bookshelf": "^0.7.9",
     "express": "^4.10.1",

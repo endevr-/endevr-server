@@ -41,8 +41,10 @@ knex.schema.hasTable('employers').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('employers', function(t) {
       t.increments('id').primary().notNullable;
-      t.string('name').notNullable();
-      t.string('location').notNullable();
+      t.string('email').notNullable();
+      t.string('password').notNullable();
+      t.string('name');
+      t.string('location');
       t.string('image');
       t.string('contact_person');
       t.string('contact_email');
