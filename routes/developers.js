@@ -1,10 +1,12 @@
+var jwt       = require('jsonwebtoken');
 var Developer = require('../api/developers/developers.model');
+var verifyJwt = require('./../config/jwtValidation.js');
 
 module.exports = function(app) {
 
   // List of all developers
   app.get('/api/developers', function(req, res, next) {
-    res.send({languages: 'JavaScript, HTML, CSS', looking: 'yes' });
+      res.send({languages: 'JavaScript, HTML, CSS', looking: 'yes' });
   });
 
   // Accepts post of user data
@@ -53,7 +55,6 @@ module.exports = function(app) {
         education: educationSet,
         linkedin: req.body.data.id,
         github: req.body.github || 'N/A',
-        auth: req.body.auth || 'N/A',
         lastcard: req.body.lastcard || 0
       })
       .save().then(function(developer){
@@ -86,7 +87,7 @@ module.exports = function(app) {
   }
 
   // List of all cards for developers
-  app.get('/api/developers/:id/cards', function(req, res, next) {
+  app.get('/api/developers/:id/cards', verifyJwt, function(req, res, next) {
     res.send(possibleCards);
   });
 

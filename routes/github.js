@@ -2,7 +2,8 @@ var passport  = require('passport');
 var jwt       = require('jsonwebtoken'); //potentially remove
 var Developer = require('../api/developers/developers.model');
 var profileData;
-var userData;
+var jwt_token;
+var userId;
 
 module.exports = function(app) {
 
@@ -24,15 +25,19 @@ passport.use(new GitHubStrategy({
 }));
 
 var getOauthToken = function(req, res, next){
-  var userToken = req.query.oauth_token;
-  var userToken = req.query['oauth_token'];
-  var server_token = jwt.sign({foo: 'bar'}, 'lalala'); //potentially remove
-  
-  new Developer({id: userData})
+  // var userToken = req.query.oauth_token;
+  jwt.verify(jwt_token, 'lalala', function(err, decoded) {
+    if (err) { console.log(err); res.redirect('/unauthorized'); }
+    userId = decoded.id;
+  });
+
+  // var server_token = jwt.sign({foo: 'bar'}, 'lalala'); //potentially remove
+
+  new Developer({id: userId})
     .fetch()
       .then(function(developer){
         if(developer){
-          new Developer({id: userData})
+          new Developer({id: userId})
           .save({
             github_url: profileData.profile_url,
             github_photo: profileData.avatar_url,
@@ -49,7 +54,7 @@ var getOauthToken = function(req, res, next){
           .then(function(developer){
             console.log('SAVED!');
             console.log(developer);
-            res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id + '&userType=dev');
+            res.redirect('?userType=dev');
           }).catch(function(error){
             console.log(error);
             res.send('An error occured', error);
@@ -60,7 +65,7 @@ var getOauthToken = function(req, res, next){
   });
 }
 
-app.get('/auth/github', function(req, res, next){ userData = req.query['userId']; next();});
+app.get('/auth/github', function(req, res, next){ jwt_token = req.query.jwt_token; next();});
 app.get('/auth/github', passport.authenticate('github', {state: 'SOME STATE'}));
 app.get('/auth/github/callback', passport.authenticate('github', {state: 'SOME STATE'}));
 app.get('/auth/github/callback', getOauthToken);
