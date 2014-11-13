@@ -3,32 +3,34 @@ var Developer = require('../api/developers/developers.model');
 var Employer  = require('../api/employers/employers.model');
 
 var jwtValidation = function(req, res, next) {
-  var token = req.query.oauth_token;
+  var token = req.query.jwt_token;
   var usertype = req.query.usertype;
+  var id;
+
   console.log('token: ' + token);
   console.log('type: ' + usertype);
 
+
   if ( token && usertype ) {
+    jwt.verify(token, 'lalala', function(err, decoded) {
+      if (err) { res.redirect('/unauthorized'); }
+
+      if (decoded.id) {
+        id = decoded.id;
+      } else {
+        res.redirect('/unauthorized');
+      }
+
+    });
 
     if (usertype === 'dev') {
 
-      new Developer({ auth: token })
+      new Developer({ id: id })
         .fetch()
         .then(function(developer) {
 
           if (developer) {
-
-            jwt.verify(token, 'lalala', function(err, decoded) {
-              if (err) { res.redirect('/unauthorized'); }
-
-                if (decoded.foo === 'bar') {
-                  next();
-                } else {
-                  res.redirect('/unauthorized');
-                }
-
-            });
-
+            next();
           } else {
             res.redirect('/unauthorized');
           }
@@ -36,23 +38,11 @@ var jwtValidation = function(req, res, next) {
 
     } else {
 
-      new Employer({ auth: token })
+      new Employer({ id: id })
         .fetch()
         .then(function(employer) {
-
           if (employer) {
-
-            jwt.verify(token, 'lalala', function(err, decoded) {
-              if (err) { res.redirect('/unauthorized'); }
-
-                if (decoded.foo === 'bar') {
-                  next();
-                } else {
-                  res.redirect('/unauthorized');
-                }
-
-            });
-
+            next();
           } else {
             res.redirect('/unauthorized');
           }

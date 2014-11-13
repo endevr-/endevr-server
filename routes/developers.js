@@ -55,7 +55,6 @@ module.exports = function(app) {
         education: educationSet,
         linkedin: req.body.data.id,
         github: req.body.github || 'N/A',
-        auth: req.body.auth || 'N/A',
         lastcard: req.body.lastcard || 0
       })
       .save().then(function(developer){

@@ -29,16 +29,22 @@ passport.deserializeUser(function(obj, done) {
 });
 
 var getOauthToken = function(req, res, next){
-  var userToken = req.query.oauth_token;
-  var server_token = jwt.sign({foo: 'bar'}, 'lalala'); 
+  var userToken = req.query.oauth_token; // we don't need this anymore
+  var jwt_token;// = jwt.sign({foo: 'bar'}, 'lalala');
 
   new Developer({'linkedin': profileData.id})
   .fetch()
   .then(function(developer){
+
     if(developer){
+
       console.log('user already exists: ', {id: developer.id});
-      res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id ); 
-    } else {  
+
+      jwt_token = jwt.sign({ id: developer.id }, 'lalala');
+
+      res.redirect('?jwt_token=' + jwt_token + '&userType=dev');
+
+    } else {
 
         profile = profileData._json;
 
@@ -56,26 +62,31 @@ var getOauthToken = function(req, res, next){
         }
 
         new Developer({
-        fname: profile.firstName,
-        lname: profile.lastName,
-        location: profile.location.name,
-        linkedin_url: profile.publicProfileUrl,
-        photo_url: profile.pictureUrl,
-        skills: skills,
-        education: education,
-        positions: 'places',
-        linkedin: profile.id,
-        github: null,
-        auth: server_token,
-        lastcard: '0'
-      })
-      .save().then(function(developer){
-        console.log('SAVED!');
-        res.redirect('?oauth_token=' + server_token + '&userId=' + developer.id );
-      }).catch(function(error) {
-        console.log(error);
-        res.send('An error occured', error);
-      });
+          fname: profile.firstName,
+          lname: profile.lastName,
+          location: profile.location.name,
+          linkedin_url: profile.publicProfileUrl,
+          photo_url: profile.pictureUrl,
+          skills: skills,
+          education: education,
+          positions: 'places',
+          linkedin: profile.id,
+          github: null,
+          lastcard: '0'
+        })
+        .save().then(function(developer){
+          console.log('SAVED!');
+
+          jwt_token = jwt.sign({ id: developer.id }, 'lalala');
+
+          res.redirect('?jwt_token=' + jwt_token + '&userType=dev');
+
+        }).catch(function(error) {
+
+          console.log(error);
+          res.send('An error occured', error);
+
+        });
     }
 });
   // is the full URL === http://localhost:9000/auth/linkedin/callback/?oauth_token=PLACEHOLDER&userId=PLACEHOLDER ?

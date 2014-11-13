@@ -27,13 +27,12 @@ knex.schema.hasTable('developers').then(function(exists) {
       t.string('public_gists');
       t.string('linkedin');
       t.string('github');
-      t.string('auth');
       t.integer('lastcard');
     }).then(function() {
-      // console.log('created developers table.');
+      console.log('created developers table.');
     });
   } else {
-    // console.log('developers table already exists.');
+    console.log('developers table already exists.');
   }
 });
 
@@ -50,10 +49,10 @@ knex.schema.hasTable('employers').then(function(exists) {
       t.string('contact_email');
       t.string('contact_phone');
     }).then(function() {
-      // console.log('created employers table.');
+      console.log('created employers table.');
     });
   } else {
-    // console.log('employers table already exists.');
+    console.log('employers table already exists.');
   }
 });
 
@@ -68,10 +67,10 @@ knex.schema.hasTable('positions').then(function(exists) {
       t.string('prefered').notNullable();
       t.integer('lastcard').notNullable();
     }).then(function() {
-      // console.log('created positions table.');
+      console.log('created positions table.');
     });
   } else {
-    // console.log('positions table already exists.');
+    console.log('positions table already exists.');
   }
 });
 
@@ -84,10 +83,10 @@ knex.schema.hasTable('matches').then(function(exists) {
       t.boolean('developer_interest').defaultTo(null);
       t.boolean('employer_interest').defaultTo(null);
     }).then(function() {
-      // console.log('created matches table.');
+      console.log('created matches table.');
     });
   } else {
-    // console.log('matches table already exists.');
+    console.log('matches table already exists.');
   }
 });
 
