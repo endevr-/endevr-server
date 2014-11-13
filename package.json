@@ -34,7 +34,6 @@
     "passport": "^0.2.1",
     "passport-github": "^0.1.5",
     "passport-linkedin-oauth2": "^1.1.1",
-    "passport-local": "^1.0.0",
     "pg": "^3.6.2",
     "should": "^4.2.1",
     "supertest": "^0.14.0"

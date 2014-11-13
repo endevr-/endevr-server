@@ -1,5 +1,3 @@
-var passport      = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var Employer      = require('../api/employers/employers.model');
 var bcrypt        = require('bcrypt-nodejs');
 
@@ -52,7 +50,6 @@ module.exports = function(app) {
 
   // Create Employer
   app.post('/api/employers/new', function(req, res, next) {
-    console.log(req.body.email);
     new Employer({
       email: req.body.email
     }).fetch().then(function(employer) {
@@ -62,9 +59,8 @@ module.exports = function(app) {
             email: req.body.email,
             password: hash
           }).save().then(function(employer) {
+            res.send({id: employer.id});
           })
-          res.send('Create account here! Username: ', req.body.email,
-            ' Password: ', req.body.password);
         });
       } else {
         res.send('Account already exists.');
