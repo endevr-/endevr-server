@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 
   if(localStorage.getItem('jwt')){
-    console.log('logged in!', localStorage.getItem('jwt'));
+    
   }
 
   $("#create").click(function(e) {
