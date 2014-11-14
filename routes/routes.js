@@ -19,6 +19,10 @@ module.exports = function(app) {
     res.sendFile(path.join(__dirname, '../public', 'employers.html'));
   });
 
+  app.get('/employers/profile', function(req, res, next) {
+    res.sendFile(path.join(__dirname, '../public', 'profile.html'));
+  });
+
   app.get('/unauthorized', function(req, res, next) {
     res.status(401).send('GTFO MANG.');
   });

@@ -1,6 +1,7 @@
 var Employer      = require('../api/employers/employers.model');
 var bcrypt        = require('bcrypt-nodejs');
 var jwt           = require('jsonwebtoken');
+var verifyJwt = require('./../config/jwtValidation.js');
 
 
 module.exports = function(app) {
@@ -42,13 +43,14 @@ module.exports = function(app) {
         res.send('Invalid username.');
       }
       bcrypt.compare(req.body.password, employer.attributes.password,
-        function(err, res) {
-          if (res === false) {
+        function(err, resp) {
+          if (resp === false) {
             res.send('Incorrect password.');
+          } else {
+            jwt_token = jwt.sign({ id: employer.id }, 'lalala');
+            res.send({jwt: jwt_token});
           }
         });
-      jwt_token = jwt.sign({ id: employer.id }, 'lalala');
-      res.send({jwt: jwt_token});
     });
   })
 
@@ -74,5 +76,35 @@ module.exports = function(app) {
       }
     })
   });
+
+  app.post('/api/employers/profile', verifyJwt, function(req, res, next) {
+    new Employer({ 'id': req.query.id })
+      .fetch()
+      .then(function(employer) {
+        if(employer) {
+
+          var updatedData = {
+            "name": req.body.name,
+            "location": req.body.location,
+            "image": req.body.image,
+            "contact_person": req.body.contact_person,
+            "contact_email": req.body.contact_email,
+            "contact_phone": req.body.contact_phone
+          };
+
+          new Employer({ id: req.query.id })
+            .save(updatedData)
+            .then(function(employer) {
+              console.log('UPDATED!');
+              res.send({'success': 'success'});
+            }).catch(function(error) {
+              res.send({'etrror': 'error'});
+            });
+            
+        } else {
+          console.log('user not found');
+        }
+      })
+  });;
 
 };
