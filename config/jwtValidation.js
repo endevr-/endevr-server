@@ -7,8 +7,8 @@ var jwtValidation = function(req, res, next) {
   var usertype = req.query.usertype;
   var id;
 
-  console.log('token: ' + token);
-  console.log('type: ' + usertype);
+  // console.log('token: ' + token);
+  // console.log('type: ' + usertype);
 
 
   if ( token && usertype ) {
@@ -30,6 +30,7 @@ var jwtValidation = function(req, res, next) {
         .then(function(developer) {
 
           if (developer) {
+            req.query.id = developer.id;
             next();
           } else {
             res.redirect('/unauthorized');
@@ -42,6 +43,7 @@ var jwtValidation = function(req, res, next) {
         .fetch()
         .then(function(employer) {
           if (employer) {
+            req.query.id = developer.id;
             next();
           } else {
             res.redirect('/unauthorized');

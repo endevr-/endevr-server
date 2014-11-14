@@ -46,7 +46,8 @@ var getOauthToken = function(req, res, next){
             following: profileData.following,
             created_at: profileData.created_at,
             updated_at: profileData.updated_at,
-            public_gists: profileData.public_gists},
+            public_gists: profileData.public_gists,
+            public_repos: profileData.public_repos},
             {
               patch: true
             }
