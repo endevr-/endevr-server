@@ -32,6 +32,7 @@ a:hover {
 html,
 body {
 /*css for full size background image*/
+/*background: url(http://habrastorage.org/files/c9c/191/f22/c9c191f226c643eabcce6debfe76049d.jpg);*/
   background: url(http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-12698.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -175,4 +176,13 @@ body {
 
 .vertical-offset-100{
     padding-top:100px;
+}
+
+.panel {
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
