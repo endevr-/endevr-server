@@ -7,8 +7,8 @@ var jwtValidation = function(req, res, next) {
   var usertype = req.query.usertype;
   var id;
 
-  console.log('token: ' + token);
-  console.log('type: ' + usertype);
+  // console.log('token: ' + token);
+  // console.log('type: ' + usertype);
 
 
   if ( token && usertype ) {

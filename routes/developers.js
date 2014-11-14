@@ -14,6 +14,7 @@ module.exports = function(app) {
     .fetch()
     .then(function(developer) {
       if (developer) {
+        console.log(developer);
         res.status(200).send(developer);
       } else {
         // No profile Found
