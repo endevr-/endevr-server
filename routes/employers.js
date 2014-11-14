@@ -42,13 +42,14 @@ module.exports = function(app) {
         res.send('Invalid username.');
       }
       bcrypt.compare(req.body.password, employer.attributes.password,
-        function(err, res) {
-          if (res === false) {
+        function(err, resp) {
+          if (resp === false) {
             res.send('Incorrect password.');
+          } else {
+            jwt_token = jwt.sign({ id: employer.id }, 'lalala');
+            res.send({jwt: jwt_token});
           }
         });
-      jwt_token = jwt.sign({ id: employer.id }, 'lalala');
-      res.send({jwt: jwt_token});
     });
   })
 
