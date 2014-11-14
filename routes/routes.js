@@ -1,3 +1,5 @@
+var path           = require('path');
+
 module.exports = function(app) {
 
   // Run on all routes to allow origin
@@ -10,7 +12,11 @@ module.exports = function(app) {
 
   // Default route
   app.get('/', function(req, res, next) {
-    res.sendfile('../public/index.html');
+    res.sendFile('../public/index.html', { root: __dirname });
+  });
+
+  app.get('/employers', function(req, res, next) {
+    res.sendFile(path.join(__dirname, '../public', 'employers.html'));
   });
 
   app.get('/unauthorized', function(req, res, next) {

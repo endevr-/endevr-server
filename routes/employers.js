@@ -1,5 +1,7 @@
 var Employer      = require('../api/employers/employers.model');
 var bcrypt        = require('bcrypt-nodejs');
+var jwt           = require('jsonwebtoken');
+
 
 module.exports = function(app) {
 
@@ -45,12 +47,13 @@ module.exports = function(app) {
             res.send('Incorrect password.');
           }
         });
-      res.send({id: employer.id});
+      jwt_token = jwt.sign({ id: employer.id }, 'lalala');
+      res.send({jwt: jwt_token});
     });
   })
 
   // Create Employer
-  app.post('/api/employers/new', function(req, res, next) {
+  app.post('/api/employers/new', function(req, res, next) {  
     var email = req.body.email.toLowerCase();
     console.log(email);
     new Employer({
@@ -62,7 +65,8 @@ module.exports = function(app) {
             email: email,
             password: hash
           }).save().then(function(employer) {
-            res.send({id: employer.id});
+            jwt_token = jwt.sign({ id: employer.id }, 'lalala');
+            res.send({jwt: jwt_token});
           })
         });
       } else {

@@ -56,7 +56,7 @@ var getOauthToken = function(req, res, next){
         var education = {};
         if(profile.educations._total !== 0){
           for(var i=0; i<profile.educations.values.length; i++){
-            skills[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
+            education[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
           }
         }
 
