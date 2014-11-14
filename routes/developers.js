@@ -23,6 +23,30 @@ module.exports = function(app) {
     });
   });
 
+  app.post('/api/developers/profile', verifyJwt, function(req, res, next) {
+    new Developer({ 'id': req.query.id })
+      .fetch()
+      .then(function(developer) {
+        if(developer) {
+
+          var updatedData = {};
+          updatedData[req.body.category] = req.body.data;
+
+          new Developer({ id: req.query.id })
+            .save(updatedData)
+            .then(function(developer) {
+              console.log('UPDATED!');
+              res.send('Success!');
+            }).catch(function(error) {
+              res.send('An error occured', error);
+            });
+            
+        } else {
+          console.log('user not found');
+        }
+      })
+  });
+
   // This is off the assumption that we have obtained possible companies
   // from the database that the developer hasn't made a decision on.
   var possibleCards = [];
