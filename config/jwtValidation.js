@@ -3,12 +3,12 @@ var Developer = require('../api/developers/developers.model');
 var Employer  = require('../api/employers/employers.model');
 
 var jwtValidation = function(req, res, next) {
-  var token = req.query.jwt_token;
-  var usertype = req.query.usertype;
+  var token = req.query.jwt_token || req.body.jwt_token;
+  var usertype = req.query.usertype || req.body.usertype;
   var id;
 
-  // console.log('token: ' + token);
-  // console.log('type: ' + usertype);
+  console.log('token: ' + token);
+  console.log('type: ' + usertype);
 
 
   if ( token && usertype ) {
@@ -43,7 +43,7 @@ var jwtValidation = function(req, res, next) {
         .fetch()
         .then(function(employer) {
           if (employer) {
-            req.query.id = developer.id;
+            req.query.id = employer.id;
             next();
           } else {
             res.redirect('/unauthorized');
