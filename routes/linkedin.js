@@ -29,8 +29,7 @@ passport.deserializeUser(function(obj, done) {
 });
 
 var getOauthToken = function(req, res, next){
-  var userToken = req.query.oauth_token; // we don't need this anymore
-  var jwt_token;// = jwt.sign({foo: 'bar'}, 'lalala');
+  var jwt_token;
 
   new Developer({'linkedin': profileData.id})
   .fetch()
@@ -57,7 +56,7 @@ var getOauthToken = function(req, res, next){
         var education = {};
         if(profile.educations._total !== 0){
           for(var i=0; i<profile.educations.values.length; i++){
-            skills[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
+            education[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
           }
         }
 
@@ -89,8 +88,7 @@ var getOauthToken = function(req, res, next){
         });
     }
 });
-  // is the full URL === http://localhost:9000/auth/linkedin/callback/?oauth_token=PLACEHOLDER&userId=PLACEHOLDER ?
-  // res.redirect('?oauth_token=' + server_token + '&userId=' + 1 );
+
 }
   // the route we direct users to when we want them to authenticate via linked in
   // i'm assuming that the this returns the URL that's needed by the client to provide

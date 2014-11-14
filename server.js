@@ -15,6 +15,7 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(bodyParser.json());
 app.use(allowCrossDomain);
+app.use(express.static(__dirname + '/public'));
 require('./routes/index')(app);
 
 var bookshelf = require('./config/db');
