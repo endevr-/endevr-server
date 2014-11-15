@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 
   if(localStorage.getItem('jwt')){
-    console.log('logged in!', localStorage.getItem('jwt'));
+    window.location("http://localhost:9000/api/employers/profile");
   }
 
   $("#create").click(function(e) {
