@@ -12,7 +12,7 @@ knex.schema.hasTable('developers').then(function(exists) {
       t.string('photo_url');
       t.json('skills');
       t.json('education');
-      t.string('positions', 10000);
+      t.json('positions');
       //github
       t.string('github_url');
       t.string('github_photo');
