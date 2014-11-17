@@ -1,4 +1,6 @@
 var path           = require('path');
+var verifyJwt = require('./../config/jwtValidation.js');
+
 
 module.exports = function(app) {
 
@@ -14,6 +16,10 @@ module.exports = function(app) {
   app.get('/', function(req, res, next) {
     res.sendFile('../public/index.html', { root: __dirname });
   });
+
+  app.post('/api/validate', verifyJwt, function(req, res, next){
+    res.send({'status': 'logged in'});
+  })
 
   app.get('/employers', function(req, res, next) {
     res.sendFile(path.join(__dirname, '../public', 'employers.html'));

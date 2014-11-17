@@ -62,9 +62,12 @@ knex.schema.hasTable('positions').then(function(exists) {
       t.increments('id').primary().notNullable;
       t.string('position').notNullable();
       t.string('location').notNullable();
-      t.string('image');
       t.string('required').notNullable();
       t.string('prefered').notNullable();
+      t.string('salary').notNullable();
+      t.string('description').notNullable();
+      t.string('time').notNullable();
+      t.string('company_size').notNullable();
       t.integer('lastcard').notNullable();
     }).then(function() {
       console.log('created positions table.');

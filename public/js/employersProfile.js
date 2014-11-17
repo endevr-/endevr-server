@@ -25,7 +25,7 @@ $(document).ready(function() {
       url: "http://localhost:9000/api/employers/profile",
       data: JSON.stringify(data),
       contentType: "application/json; charset=utf-8",
-      dataType: "json"
+      dataType: "json",
       success: function(data) {
         console.log('Saved! - ', data);
         $('#companyName').val('');
@@ -39,7 +39,6 @@ $(document).ready(function() {
         console.log('Create! Failure: ', e);
       }
     });
-
   });
-
+    
 });
