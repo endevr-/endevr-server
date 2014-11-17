@@ -9,7 +9,7 @@
 
 <body>
   <div class="site-wrapper">
-    <div class="site-wrapper-inner">
+    <!-- <div class="site-wrapper-inner"> -->
       <div class="cover-container">
         <div class="masthead clearfix">
           <div class="inner">
@@ -33,77 +33,120 @@
               </li>
             </ul>
           </div>
-        </div>
-
-<!--         <div class="container">
+        </div><!--         <div class="container">
           <div class="row vertical-offset-100"> -->
 
-            <div class="col-md-12">
-              <div class="panel panel-default">
-                <div class="panel-body">
-
-                  <div class="col-md-6">
-                    <div class="panel panel-default">
-                      <div class="panel-body">
-                        <form role="form">
-                          <div class="form-group">
-                            <label>Company Name</label>
-                            <input type="email" class="form-control" id="companyName">
-                          </div>
-                          <div class="form-group">
-                            <label>Location</label>
-                            <input type="text" class="form-control" id="companyLocation">
-                          </div>
-                          <div class="form-group">
-                            <label>Image URL</label>
-                            <input type="text" class="form-control" id="companyUrl">
-                          </div>
-                        </form>
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <form>
+                      <div class="form-group">
+                        <label>Company Name</label> <input class="form-control"
+                        id="companyName" type="email">
                       </div>
-                    </div>
-                  </div>
 
-                  <div class="col-md-6">
-                    <div class="panel panel-default">
-                      <div class="panel-body">
-                        <form role="form">
-                          <div class="form-group">
-                            <label>Contact Email</label>
-                            <input type="email" class="form-control" id="contactEmail">
-                          </div>
-                          <div class="form-group">
-                            <label>Contact Name</label>
-                            <input type="text" class="form-control" id="contactName">
-                          </div>
-                          <div class="form-group">
-                            <label>Contact Phone</label>
-                            <input type="text" class="form-control" id="contactPhone">
-                          </div>
-                        </form>
+                      <div class="form-group">
+                        <label>Location</label> <input class="form-control" id=
+                        "companyLocation" type="text">
                       </div>
-                    </div>
-                  </div>
 
-                <button type="button" class="btn btn-success" id="save">Save</button>
+                      <div class="form-group">
+                        <label>Image URL</label> <input class="form-control"
+                        id="companyUrl" type="text">
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
+
+              <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <form>
+                      <div class="form-group">
+                        <label>Contact Email</label> <input class=
+                        "form-control" id="contactEmail" type="email">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Contact Name</label> <input class="form-control"
+                        id="contactName" type="text">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Contact Phone</label> <input class=
+                        "form-control" id="contactPhone" type="text">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div><button class="btn btn-success" id="save" type=
+              "button">Save</button>
             </div>
-<!-- 
-          </div>
-        </div> -->
-
-        <div class="mastfoot">
-          <div class="inner">
-            <!-- Validation -->
-
-            <p>2014 endevr</p>
           </div>
         </div>
       </div>
-    </div>
-  </div><!-- Latest compiled and minified JavaScript -->
-  <script src="/bower_components/jquery/dist/jquery.min.js"></script> 
-  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script> 
-  <script src="/js/employersProfile.js"></script>
+
+      <div class="container">
+        <div class="row clearfix">
+          <div class="col-md-12 table-responsive" id="opaaa">
+            <table class="table table-sortable" id="tab_logic">
+              <thead>
+                <tr>
+                  <th class="text-center">Job Title</th>
+                  <th class="text-center">Description</th>
+                  <th class="text-center">Requirements</th>
+                  <th class="text-center">Prefered Skills</th>
+                  <th class="text-center">Location</th>
+                  <th class="text-center">Salary</th>
+                  <th class="text-center">Save</th>
+                  <th class="text-center">Delete</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr class="hidden" data-id="0" id='addr0'>
+                  <td data-name="name"><input class="form-control" name='name0'
+                  placeholder='Job Title' type="text"></td>
+
+                  <td data-name="desc">
+                  <textarea class="form-control" name="desc0" placeholder=
+                  "Description">
+                  </textarea></td>
+
+                  <td data-name="reqs">
+                  <textarea class="form-control" name="reqs0" placeholder=
+                  "Requirements">
+                  </textarea></td>
+
+                  <td data-name="prefs">
+                  <textarea class="form-control" name="prefs0" placeholder=
+                  "Prefered Skills">
+                  </textarea></td>
+
+                  <td data-name="loc"><input class="form-control" name='loc0'
+                  placeholder='Location' type="text"></td>
+
+                  <td data-name="sal"><input class="form-control" name='sal0'
+                  placeholder='Salary' type="text"></td>
+
+                  <td data-name="sav"><button id="sav0" class=
+                  'btn btn-success glyphicon glyphicon-ok row-add'></button></td>
+
+                  <td data-name="del"><button class=
+                  'btn btn-danger glyphicon glyphicon-remove row-remove'></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div><a class="btn btn-success glyphicon glyphicon-plus pull-right"
+        id="add_row"></a>
+      </div>
+    <!-- </div> -->
+  </div>
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script> <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script> <script src="/js/table.js"></script> <script src="/js/employersProfile.js"></script>
 </body>
 </html>

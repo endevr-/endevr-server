@@ -2,7 +2,23 @@ $(document).ready(function() {
 
 
   if(localStorage.getItem('jwt')){
-    window.location("http://localhost:9000/api/employers/profile");
+    var data = {'jwt_token': localStorage.getItem('jwt'), usertype: 'emp'};
+    console.log(data);
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:9000/api/validate",
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data) {
+        if(data.status === 'logged in'){
+          window.location.replace("http://localhost:9000/employers/profile");
+        }
+      },
+      error: function(e){
+        console.log('Error: ', e);
+      }
+    });
   }
 
   $("#create").click(function(e) {
