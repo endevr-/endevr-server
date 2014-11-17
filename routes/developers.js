@@ -59,7 +59,7 @@ module.exports = function(app) {
   }
 
   app.get('/api/developers/cards', verifyJwt, function(req, res, next) {
-    res.send(possibleCards);
+
   });
 
   app.get('/api/developers/matches', verifyJwt, function(req, res, next) {

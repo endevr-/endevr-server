@@ -13,6 +13,14 @@ module.exports = function(app) {
     })
   });
 
+  app.get('/api/developers/cards', verifyJwt, function(req, res, next) {
+
+  });
+
+  app.get('/api/developers/matches', verifyJwt, function(req, res, next) {
+
+  });
+
   // List of all cards for developers
   app.get('/api/employers/:id/cards', function(req, res, next) {
     res.send([{
@@ -55,7 +63,7 @@ module.exports = function(app) {
   })
 
   // Create Employer
-  app.post('/api/employers/new', function(req, res, next) {  
+  app.post('/api/employers/new', function(req, res, next) {
     var email = req.body.email.toLowerCase();
     console.log(email);
     new Employer({
@@ -100,7 +108,7 @@ module.exports = function(app) {
             }).catch(function(error) {
               res.send({'etrror': 'error'});
             });
-            
+
         } else {
           console.log('user not found');
         }
