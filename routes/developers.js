@@ -40,7 +40,7 @@ module.exports = function(app) {
             }).catch(function(error) {
               res.send('An error occured', error);
             });
-            
+
         } else {
           console.log('user not found');
         }
@@ -57,6 +57,14 @@ module.exports = function(app) {
     company.image = 'http://www.farmvillefreak.com/farmville_images/facebook_farmville_freak_lobster_corgi_icon.png';
     possibleCards.push(company);
   }
+
+  app.get('/api/developers/cards', verifyJwt, function(req, res, next) {
+
+  });
+
+  app.get('/api/developers/matches', verifyJwt, function(req, res, next) {
+
+  });
 
   // List of all cards for developers
   app.get('/api/developers/:id/cards', verifyJwt, function(req, res, next) {
