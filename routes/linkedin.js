@@ -72,7 +72,7 @@ var getOauthToken = function(req, res, next){
         new Developer({
           fname: profile.firstName,
           lname: profile.lastName,
-          email: profile.email,
+          // email: profile.email,
           location: profile.location.name,
           linkedin_url: profile.publicProfileUrl,
           photo_url: profile.pictureUrl,

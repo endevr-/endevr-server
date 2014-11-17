@@ -19,7 +19,7 @@ module.exports = function(app) {
 
   app.post('/api/validate', verifyJwt, function(req, res, next){
     res.send({'status': 'logged in'});
-  })
+  });
 
   app.get('/employers', function(req, res, next) {
     res.sendFile(path.join(__dirname, '../public', 'employers.html'));
