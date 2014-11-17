@@ -47,6 +47,8 @@ var getOauthToken = function(req, res, next){
 
         profile = profileData._json;
 
+        // console.log(profile);
+
         var skills = {};
         if(profile.skills !== undefined){
           for(var i=0; i<profile.skills.values.length; i++){
@@ -56,7 +58,14 @@ var getOauthToken = function(req, res, next){
         var education = {};
         if(profile.educations._total !== 0){
           for(var i=0; i<profile.educations.values.length; i++){
-            education[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].degree;
+            education[i] = profile.educations.values[i].schoolName + ' - ' + profile.educations.values[i].fieldOfStudy;
+          }
+        }
+
+        var positions = {};
+        if(profile.positions._total !== 0){
+          for(var i=0; i<profile.positions.values.length; i++) {
+            positions[i] =  profile.positions.values[i].company.name + ' - ' + profile.positions.values[i].title;
           }
         }
 
@@ -68,7 +77,7 @@ var getOauthToken = function(req, res, next){
           photo_url: profile.pictureUrl,
           skills: skills,
           education: education,
-          positions: 'places',
+          positions: positions,
           linkedin: profile.id,
           github: null,
           lastcard: '0'
