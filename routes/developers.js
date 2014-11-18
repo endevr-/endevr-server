@@ -1,5 +1,7 @@
 var jwt       = require('jsonwebtoken');
 var Developer = require('../api/developers/developers.model');
+var Match     = require('../api/matches/matches.model');
+
 var verifyJwt = require('./../config/jwtValidation.js');
 
 module.exports = function(app) {
@@ -62,8 +64,48 @@ module.exports = function(app) {
 
   });
 
-  app.get('/api/developers/matches', verifyJwt, function(req, res, next) {
+    app.post('/api/developers/matches', function(req, res, next) {
+      new Match({developers_id: req.body.devid, positions_id: req.body.posid})
+      .fetch()
+      .then(function(match){
+        if(!match){
+          new Match({
+            developers_id: req.body.devid,
+            positions_id: req.body.posid,
+            developer_interest: req.body.devint,
+          }).save().then(function(match){
+            res.send({id: match.id});
+          }).catch(function(error){
+            res.send(error);
+          })
+        } else {
+          new Match({
+            id: match.id,
+            developers_id: req.body.devid,
+            positions_id: req.body.posid,
+            developer_interest: req.body.devint,
+          }).save().then(function(match){
+            res.send({id: match.id});
+          }).catch(function(error){
+            res.send(error);
+          })
+        }
+      })
+  });
 
+  app.get('/api/developers/matches', function(req, res, next) {
+    new Match()
+    .where({
+      developers_id: 1,
+      developer_interest: true,
+      employer_interest: true
+    })
+    .fetchAll().then(function(match) {
+      res.send(match.toJSON());
+    }).catch(function(error) {
+      console.log(error);
+      res.send('An error occured', error);
+    });
   });
 
   // List of all cards for developers

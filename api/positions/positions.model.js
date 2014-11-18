@@ -1,4 +1,4 @@
-var bookshelf = require('bookshelf')(knex);
+var bookshelf = require('../../config/db');
 
 var Position = bookshelf.Model.extend({
   tableName: 'positions',
@@ -8,3 +8,5 @@ var Position = bookshelf.Model.extend({
   }
 
 });
+
+module.exports = Position;
