@@ -75,7 +75,7 @@ module.exports = function(app) {
           new Match({
             id: match.id,
             developers_id: req.body.devid,
-            positions_id: req.body.empid,
+            positions_id: req.body.posid,
             employer_interest: req.body.empint,
           }).save().then(function(match){
             res.send({id: match.id});
