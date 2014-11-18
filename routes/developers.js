@@ -7,6 +7,7 @@ var knex          = require('../config/knex.js');
 var verifyJwt = require('./../config/jwtValidation.js');
 
 module.exports = function(app) {
+  
   // Retrieve Developer's Opportunity Cards
   app.get('/api/developers/cards', verifyJwt, function(req, res, next) {
     knex.select('positions_id')
