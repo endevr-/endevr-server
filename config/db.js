@@ -60,6 +60,7 @@ knex.schema.hasTable('positions').then(function(exists) {
   if (!exists) {
     return knex.schema.createTable('positions', function(t) {
       t.increments('id').primary().notNullable;
+      t.integer('employers_id').notNullable();
       t.string('position').notNullable();
       t.string('location').notNullable();
       t.string('required').notNullable();

@@ -1,4 +1,7 @@
 var Employer      = require('../api/employers/employers.model');
+var Position      = require('../api/positions/positions.model');
+var Match         = require('../api/matches/matches.model');
+var knex          = require('../config/knex.js');
 var bcrypt        = require('bcrypt-nodejs');
 var jwt           = require('jsonwebtoken');
 var verifyJwt = require('./../config/jwtValidation.js');
@@ -13,12 +16,87 @@ module.exports = function(app) {
     })
   });
 
-  app.get('/api/developers/cards', verifyJwt, function(req, res, next) {
+  app.get('/api/employers/cards', function(req, res) {
+    knex.select('positions_id', '*')
+    .from('matches')
+      .leftOuterJoin('positions', 'positions.id', 'positions_id')
+      .where({employer_interest: null, positions_id: 2}) //replace with req.body.something
+    .then(function(cards) {
+      res.send(cards);
+    }).catch(function(error) {
+      console.log(error);
+      res.send('An error occured', error);
+    });
+  }); 
 
+  app.post('/api/employers/positions', function(req, res, next) {
+    new Position({
+      id: req.body.id
+    }).fetch().then(function(position) {
+      if (!position) {
+        new Position({
+          employers_id: req.body.employers_id,
+          position: req.body.position,
+          location: req.body.location,
+          required: req.body.required,
+          prefered: req.body.prefered,
+          salary: req.body.salary,
+          description: req.body.description,
+          time: req.body.time,
+          company_size: req.body.company_size,
+          lastcard: req.body.lastcard
+        })
+        .save().then(function(position){
+          res.send({id: position.id});
+        });
+      } else {
+        res.send('Already exists.');
+      }
+    });
   });
 
-  app.get('/api/developers/matches', verifyJwt, function(req, res, next) {
+  app.post('/api/employers/matches', function(req, res, next) {
+      new Match({developers_id: req.body.devid, positions_id: req.body.posid})
+      .fetch()
+      .then(function(match){
+        if(!match){
+          new Match({
+            developers_id: req.body.devid,
+            positions_id: req.body.posid,
+            employer_interest: req.body.empint,
+          }).save().then(function(match){
+            res.send({id: match.id});
+          }).catch(function(error){
+            res.send(error);
+          })
+        } else {
+          new Match({
+            id: match.id,
+            developers_id: req.body.devid,
+            positions_id: req.body.empid,
+            employer_interest: req.body.empint,
+          }).save().then(function(match){
+            res.send({id: match.id});
+          }).catch(function(error){
+            res.send(error);
+          })
+        }
+      })
+  });
 
+  app.get('/api/employers/matches', function(req, res, next) {
+    new Match()
+    .where({
+      positions_id: 2,
+      developer_interest: true,
+      employer_interest: true
+    })
+    .fetchAll().then(function(match) {
+      res.send(match);
+    }).catch(function(error) {
+      console.log(error);
+      res.send('An error occured', error);
+    });
   });
 
   // List of all cards for developers
