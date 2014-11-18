@@ -7,7 +7,6 @@ var knex = require('knex')({
     database : process.env.HEROKU_DB   || 'endevr',
     port:      process.env.HEROKU_PORT || 5432,
     ssl:       process.env.HEROKU_SSL  ||  false
-
   }
 });
 
