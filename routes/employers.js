@@ -6,26 +6,19 @@ var bcrypt        = require('bcrypt-nodejs');
 var jwt           = require('jsonwebtoken');
 var verifyJwt = require('./../config/jwtValidation.js');
 
-
 module.exports = function(app) {
 
-    // List of all employers
-  app.get('/api/employers', verifyJwt, function(req, res, next) {
-    new Employer().fetchAll().then(function(employers){
-      res.send(employers);
-    })
-  });
-
+  // Retrieve Employer's Developer Cards
   app.get('/api/employers/cards', verifyJwt, function(req, res) {
     knex.select('developers_id', '*')
     .from('matches')
       .fullOuterJoin('developers', 'developers.id', 'developers_id')
-      .where({employer_interest: null}) //replace with req.body.something
+      .where({employer_interest: null})
     .then(function(cards) {
       var positionCards = [];
       for (var index = 0; index < cards.length; index++) {
-        if (cards[index].positions_id === null || cards[index].positions_id === req.body.posId) { //req.body.posId
-          cards[index].positions_id = req.body.posId; //req.body.posId;
+        if (cards[index].positions_id === null || cards[index].positions_id === req.body.posid) {
+          cards[index].positions_id = req.body.posid;
           positionCards.push(cards[index]);
         }
       }
@@ -36,32 +29,34 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/api/employers/positions', verifyJwt, function(req, res, next) {
-    new Position({
-      id: req.body.id
-    }).fetch().then(function(position) {
-      if (!position) {
-        new Position({
-          employers_id: req.body.employers_id,
-          position: req.body.position,
-          location: req.body.location,
-          required: req.body.required,
-          prefered: req.body.prefered,
-          salary: req.body.salary,
-          description: req.body.description,
-          time: req.body.time,
-          company_size: req.body.company_size,
-          lastcard: req.body.lastcard
-        })
-        .save().then(function(position){
-          res.send({id: position.id});
-        });
-      } else {
-        res.send('Already exists.');
+  // Retrieve All Employer Matches
+  app.get('/api/employers/matches', verifyJwt, function(req, res, next) {
+    var devArray = [];
+    new Match()
+    .where({
+      positions_id: req.body.posid,
+      developer_interest: true,
+      employer_interest: true
+    })
+    .fetchAll().then(function(match) {
+      match = match.models;
+      console.log('here!', match)
+      for(var i=0; i<match.length; i++){
+        var dev = match[i].attributes.developers_id;
+        devArray.push(dev);
       }
+      knex.select('*').from('developers')
+        .whereIn('id', devArray)
+        .then(function(developers){
+          res.send(developers);
+        })
+    })
+    .catch(function(error) {
+      res.send('An error occured', error);
     });
   });
 
+  // Update Employer Decision for a Match
   app.post('/api/employers/matches', verifyJwt, function(req, res, next) {
       new Match({developers_id: req.body.devid, positions_id: req.body.posid})
       .fetch()
@@ -91,83 +86,7 @@ module.exports = function(app) {
       })
   });
 
-  app.get('/api/employers/matches', verifyJwt, function(req, res, next) {
-    var devArray = [];
-    new Match()
-    .where({
-      positions_id: req.body.posid,
-      developer_interest: true,
-      employer_interest: true
-    })
-    .fetchAll().then(function(match) {
-      match = match.models;
-      console.log('here!', match)
-      for(var i=0; i<match.length; i++){
-        var dev = match[i].attributes.developers_id;
-        devArray.push(dev);
-      }
-      knex.select('*').from('developers')
-        .whereIn('id', devArray)
-        .then(function(developers){
-          res.send(developers);
-        })
-    })
-    .catch(function(error) {
-      res.send('An error occured', error);
-    });
-  });
-
-  // List of all cards for developers
-  app.get('/api/employers/:id/cards', function(req, res, next) {
-    res.send([{
-      name: 'Jeff',
-      profile: {
-        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
-        public_repos: '26',
-        education: ['University of Michigan', 'Michigan State University'],
-        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
-      },
-      image: 'http://www.clker.com/cliparts/b/8/0/d/11971143901626395792Steren_bike_rider_1.svg.med.png'
-    }, {
-      name: 'Josh',
-      profile: {
-        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
-        public_repos: '26',
-        education: ['University of Michigan', 'Michigan State University'],
-        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
-      },
-      image: 'http://www.clker.com/cliparts/5/D/d/r/S/L/bearded-man-cartoon-hi.png'
-    }, {
-      name: 'Justin',
-      profile: {
-        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
-        public_repos: '26',
-        education: ['University of Michigan', 'Michigan State University'],
-        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
-      },
-      image: 'http://licensedmentalhealthcounselor.files.wordpress.com/2012/03/cute_asian_cartoon_baby_sitting_up_wearing_diaper_with_big_smile_0515-1001-2911-4512_smu1.jpg'
-    }, {
-      name: 'Adam',
-      profile: {
-        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
-        public_repos: '26',
-        education: ['University of Michigan', 'Michigan State University'],
-        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
-      },
-      image: 'http://static8.depositphotos.com/1499637/979/v/950/depositphotos_9794386-Trekking-boy..jpg'
-    }, {
-      name: 'BATMAN!',
-      profile: {
-        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
-        public_repos: '26',
-        education: ['University of Michigan', 'Michigan State University'],
-        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
-      },
-      image: 'http://static.comicvine.com/uploads/original/11113/111136107/4058802-6025115082-31152.jpg'
-    }]);
-  });
-
-  // Employer Login
+  // Login Employer
   app.post('/api/employers/login', function(req, res, next) {
     var email = req.body.email.toLowerCase();
     new Employer({
@@ -211,7 +130,7 @@ module.exports = function(app) {
     })
   });
 
-
+  // Retrieve Employer Profile
   app.get('/api/employers/profile', verifyJwt, function(req, res, next) {
     new Employer({ 'id': req.query.id })
     .fetch()
@@ -226,6 +145,7 @@ module.exports = function(app) {
     });
   });
 
+  // Update Employer Profile
   app.post('/api/employers/profile', verifyJwt, function(req, res, next) {
     console.log(req.body);
     new Employer({ 'id': req.query.id })
@@ -252,4 +172,32 @@ module.exports = function(app) {
         }
       })
   });
+
+  // Create Employer Job Position
+  app.post('/api/employers/positions', verifyJwt, function(req, res, next) {
+    new Position({
+      id: req.body.id
+    }).fetch().then(function(position) {
+      if (!position) {
+        new Position({
+          employers_id: req.body.employers_id,
+          position: req.body.position,
+          location: req.body.location,
+          required: req.body.required,
+          prefered: req.body.prefered,
+          salary: req.body.salary,
+          description: req.body.description,
+          time: req.body.time,
+          company_size: req.body.company_size,
+          lastcard: req.body.lastcard
+        })
+        .save().then(function(position){
+          res.send({id: position.id});
+        });
+      } else {
+        res.send('Already exists.');
+      }
+    });
+  });
+
 };
