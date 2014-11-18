@@ -1,6 +1,7 @@
 var jwt       = require('jsonwebtoken');
 var Developer = require('../api/developers/developers.model');
 var Match     = require('../api/matches/matches.model');
+var knex          = require('../config/knex.js');
 
 var verifyJwt = require('./../config/jwtValidation.js');
 
@@ -61,10 +62,32 @@ module.exports = function(app) {
   }
 
   app.get('/api/developers/cards', verifyJwt, function(req, res, next) {
+    knex.select('positions_id')
+    .from('matches')
+    .where({ developers_id: req.query.id, developer_interest: !null})
+    .then(function(cards) {
+
+      var positionIds = [];
+
+      for (var index = 0; index < cards.length; index++) {
+        positionIds.push( cards[index].positions_id );
+      }
+
+      console.log(cards);
+      knex.select('*')
+      .from('positions')
+      .whereNotIn('id', positionIds)
+      .then(function(positionCards) {
+        res.send(positionCards);
+      })
+    }).catch(function(error) {
+      console.log(error);
+      res.send('Error!', error);
+    });
 
   });
 
-    app.post('/api/developers/matches', function(req, res, next) {
+    app.post('/api/developers/matches', verifyJwt, function(req, res, next) {
       new Match({developers_id: req.body.devid, positions_id: req.body.posid})
       .fetch()
       .then(function(match){
@@ -93,10 +116,10 @@ module.exports = function(app) {
       })
   });
 
-  app.get('/api/developers/matches', function(req, res, next) {
+  app.get('/api/developers/matches', verifyJwt, function(req, res, next) {
     new Match()
     .where({
-      developers_id: 1,
+      developers_id: req.query.id,
       developer_interest: true,
       employer_interest: true
     })

@@ -16,20 +16,27 @@ module.exports = function(app) {
     })
   });
 
-  app.get('/api/employers/cards', function(req, res) {
-    knex.select('positions_id', '*')
+  app.get('/api/employers/cards', verifyJwt, function(req, res) {
+    knex.select('developers_id', '*')
     .from('matches')
-      .leftOuterJoin('positions', 'positions.id', 'positions_id')
-      .where({employer_interest: null, positions_id: 2}) //replace with req.body.something
+      .fullOuterJoin('developers', 'developers.id', 'developers_id')
+      .where({employer_interest: null}) //replace with req.body.something
     .then(function(cards) {
-      res.send(cards);
+      var positionCards = [];
+      for (var index = 0; index < cards.length; index++) {
+        if (cards[index].positions_id === null || cards[index].positions_id === req.body.posId) { //req.body.posId
+          cards[index].positions_id = req.body.posId; //req.body.posId;
+          positionCards.push(cards[index]);
+        }
+      }
+      res.send(positionCards);
     }).catch(function(error) {
       console.log(error);
       res.send('An error occured', error);
     });
-  }); 
+  });
 
-  app.post('/api/employers/positions', function(req, res, next) {
+  app.post('/api/employers/positions', verifyJwt, function(req, res, next) {
     new Position({
       id: req.body.id
     }).fetch().then(function(position) {
@@ -55,7 +62,7 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/api/employers/matches', function(req, res, next) {
+  app.post('/api/employers/matches', verifyJwt, function(req, res, next) {
       new Match({developers_id: req.body.devid, positions_id: req.body.posid})
       .fetch()
       .then(function(match){
@@ -87,7 +94,7 @@ module.exports = function(app) {
   app.get('/api/employers/matches', function(req, res, next) {
     new Match()
     .where({
-      positions_id: 2,
+      positions_id: 8,
       developer_interest: true,
       employer_interest: true
     })
