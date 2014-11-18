@@ -53,8 +53,12 @@ module.exports = function(app) {
 
   for (var index = 0; index < 50; index++) {
     var company = {};
-    company.name = 'company #'+index;
-    company.image = 'http://www.farmvillefreak.com/farmville_images/facebook_farmville_freak_lobster_corgi_icon.png';
+    company.name = 'Company #'+index;
+    company.image = 'http://mydomadesign.com/wp-content/uploads/2013/07/10C3.jpg';
+    company.location = 'San Francisco';
+    company.position = 'Software Engineer';
+    company.salary = '$'+(Math.floor(Math.random() * 150))+','+'000';
+    company.company_size = '100-200';
     possibleCards.push(company);
   }
 

@@ -17,18 +17,48 @@ module.exports = function(app) {
   app.get('/api/employers/:id/cards', function(req, res, next) {
     res.send([{
       name: 'Jeff',
+      profile: {
+        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
+        public_repos: '26',
+        education: ['University of Michigan', 'Michigan State University'],
+        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
+      },
       image: 'http://www.clker.com/cliparts/b/8/0/d/11971143901626395792Steren_bike_rider_1.svg.med.png'
     }, {
       name: 'Josh',
+      profile: {
+        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
+        public_repos: '26',
+        education: ['University of Michigan', 'Michigan State University'],
+        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
+      },
       image: 'http://www.clker.com/cliparts/5/D/d/r/S/L/bearded-man-cartoon-hi.png'
     }, {
       name: 'Justin',
+      profile: {
+        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
+        public_repos: '26',
+        education: ['University of Michigan', 'Michigan State University'],
+        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
+      },
       image: 'http://licensedmentalhealthcounselor.files.wordpress.com/2012/03/cute_asian_cartoon_baby_sitting_up_wearing_diaper_with_big_smile_0515-1001-2911-4512_smu1.jpg'
     }, {
       name: 'Adam',
+      profile: {
+        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
+        public_repos: '26',
+        education: ['University of Michigan', 'Michigan State University'],
+        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
+      },
       image: 'http://static8.depositphotos.com/1499637/979/v/950/depositphotos_9794386-Trekking-boy..jpg'
     }, {
       name: 'BATMAN!',
+      profile: {
+        skills: ['Backbone.js', 'Angular.js', 'Ionic', 'JavaScript', 'CoffeeScript'],
+        public_repos: '26',
+        education: ['University of Michigan', 'Michigan State University'],
+        positions: ['Product Manager', 'Analyst', 'Associate', 'Intern']
+      },
       image: 'http://static.comicvine.com/uploads/original/11113/111136107/4058802-6025115082-31152.jpg'
     }]);
   });
@@ -77,20 +107,32 @@ module.exports = function(app) {
     })
   });
 
+
+  app.get('/api/employers/profile', verifyJwt, function(req, res, next) {
+    new Employer({ 'id': req.query.id })
+    .fetch()
+    .then(function(employer) {
+      if (employer) {
+        console.log(employer);
+        res.status(200).send(employer);
+      } else {
+        // No profile Found
+        res.send({});
+      }
+    });
+  });
+
   app.post('/api/employers/profile', verifyJwt, function(req, res, next) {
+    console.log(req.body);
     new Employer({ 'id': req.query.id })
       .fetch()
       .then(function(employer) {
         if(employer) {
 
-          var updatedData = {
-            "name": req.body.name,
-            "location": req.body.location,
-            "image": req.body.image,
-            "contact_person": req.body.contact_person,
-            "contact_email": req.body.contact_email,
-            "contact_phone": req.body.contact_phone
-          };
+          console.log("Hit post to emp profile");
+
+          var updatedData = {};
+          updatedData[req.body.category] = req.body.data;
 
           new Employer({ id: req.query.id })
             .save(updatedData)
@@ -105,6 +147,5 @@ module.exports = function(app) {
           console.log('user not found');
         }
       })
-  });;
-
+  });
 };
