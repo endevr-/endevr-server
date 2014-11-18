@@ -1,5 +1,6 @@
 var jwt       = require('jsonwebtoken');
 var Developer = require('../api/developers/developers.model');
+var Position  = require('../api/positions/positions.model');
 var Match     = require('../api/matches/matches.model');
 var knex          = require('../config/knex.js');
 
@@ -121,15 +122,27 @@ module.exports = function(app) {
   });
 
   app.get('/api/developers/matches', verifyJwt, function(req, res, next) {
+    var posArray = [];
     new Match()
     .where({
-      developers_id: req.query.id,
+      developers_id: req.body.devid,
       developer_interest: true,
       employer_interest: true
     })
     .fetchAll().then(function(match) {
-      res.send(match.toJSON());
-    }).catch(function(error) {
+      match = match.models;
+      for(var i=0; i<match.length; i++){
+        var pos = match[i].attributes.positions_id;
+        posArray.push(pos);
+      }
+      knex.select('*').from('positions')
+        .whereIn('id', posArray)
+        .then(function(positions){
+          console.log(positions);
+          res.send(positions);
+        })
+    })
+    .catch(function(error) {
       console.log(error);
       res.send('An error occured', error);
     });

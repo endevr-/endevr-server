@@ -10,7 +10,7 @@ var verifyJwt = require('./../config/jwtValidation.js');
 module.exports = function(app) {
 
     // List of all employers
-  app.get('/api/employers', function(req, res, next) {
+  app.get('/api/employers', verifyJwt, function(req, res, next) {
     new Employer().fetchAll().then(function(employers){
       res.send(employers);
     })
@@ -91,17 +91,28 @@ module.exports = function(app) {
       })
   });
 
-  app.get('/api/employers/matches', function(req, res, next) {
+  app.get('/api/employers/matches', verifyJwt, function(req, res, next) {
+    var devArray = [];
     new Match()
     .where({
-      positions_id: 8,
+      positions_id: req.body.posid,
       developer_interest: true,
       employer_interest: true
     })
     .fetchAll().then(function(match) {
-      res.send(match);
-    }).catch(function(error) {
-      console.log(error);
+      match = match.models;
+      console.log('here!', match)
+      for(var i=0; i<match.length; i++){
+        var dev = match[i].attributes.developers_id;
+        devArray.push(dev);
+      }
+      knex.select('*').from('developers')
+        .whereIn('id', devArray)
+        .then(function(developers){
+          res.send(developers);
+        })
+    })
+    .catch(function(error) {
       res.send('An error occured', error);
     });
   });
