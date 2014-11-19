@@ -15,7 +15,7 @@ module.exports = function(app) {
     .where({positions_id: req.query.posid, employer_interest: !null})
     .then(function(cards) {
       var developerIds = [];
-
+      console.log(cards);
       for (var index = 0; index < cards.length; index++) {
         developerIds.push( cards[index].developers_id );
       }
@@ -25,6 +25,7 @@ module.exports = function(app) {
       .from('developers')
       .whereNotIn('id', developerIds)
       .then(function(positionCards) {
+        console.log(positionCards);
         res.send(positionCards);
       })
     }).catch(function(error) {
