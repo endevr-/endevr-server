@@ -70,7 +70,7 @@ module.exports = function(app) {
     var posArray = [];
     new Match()
     .where({
-      developers_id: req.body.devid,
+      developers_id: req.query.id,
       developer_interest: true,
       employer_interest: true
     })
