@@ -17,8 +17,8 @@ module.exports = function(app) {
     .then(function(cards) {
       var positionCards = [];
       for (var index = 0; index < cards.length; index++) {
-        if (cards[index].positions_id === null || cards[index].positions_id === req.body.posid) {
-          cards[index].positions_id = req.body.posid;
+        if (cards[index].positions_id === null || cards[index].positions_id === req.query.posid) {
+          cards[index].positions_id = req.query.posid;
           positionCards.push(cards[index]);
         }
       }
@@ -171,6 +171,21 @@ module.exports = function(app) {
           console.log('user not found');
         }
       })
+  });
+
+  // Retrieve Employer Job Positiions
+  app.get('/api/employers/positions', verifyJwt, function(req, res, next) {
+    new Position()
+    .where({
+      employers_id: req.query.id
+    })
+    .fetchAll().then(function(positions) {
+      // console.log(positions);
+      res.send(positions);
+    })
+    .catch(function(error) {
+      res.send('An error occured', error);
+    });
   });
 
   // Create Employer Job Position
