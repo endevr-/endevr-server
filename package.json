@@ -37,5 +37,8 @@
     "pg": "^3.6.2",
     "should": "^4.2.1",
     "supertest": "^0.14.0"
+  },
+  "scripts": {
+    "postinstall": "./public/bower/bin/bower install"
   }
 }
