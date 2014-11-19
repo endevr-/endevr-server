@@ -9,7 +9,7 @@ var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 passport.use(new LinkedInStrategy({
   clientID: '75omjdr2z9uzpl',
   clientSecret: 'T5nt3O8QEsZXY8vR',
-  callbackURL: "https://endevr.herokuapp.com/auth/linkedin/callback",
+  callbackURL: process.env.HEROKU_URL || "http://localhost:9000/auth/linkedin/callback",
   scope: ['r_emailaddress', 'r_fullprofile'],
   // callback function will be ran once authentication is successful
   }, function(accessToken, refreshToken, profile, done) {
