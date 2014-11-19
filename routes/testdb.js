@@ -1,5 +1,6 @@
 var Employer      = require('../api/employers/employers.model');
 var Position      = require('../api/positions/positions.model');
+var Developer     = require('../api/developers/developers.model');
 var Match         = require('../api/matches/matches.model');
 var knex          = require('../config/knex.js');
 var bcrypt        = require('bcrypt-nodejs');
@@ -102,9 +103,27 @@ bcrypt.hash('test', null, null, function(err, hash) {
     })
     .save().then(function(position2){
       console.log('position created! ' + position2.id);
+      new Developer({
+        fname: 'Kyser',
+        lname: 'Soze',
+        location: 'Unknown'
+      })
+      .save().then(function(developer){
+      console.log('developer created! ' + developer.id);  
+      new Match({
+        developers_id: developer.id,
+        positions_id: position2.id,
+        developer_interest: true,
+        employer_interest: true,
+      })
+      .save().then(function(match1){
+        console.log('match created! ' + match1.id);
+      });
+      })
+
+
     });
   });
-
 });
 
 };
