@@ -10,22 +10,26 @@ module.exports = function(app) {
 
   // Retrieve Employer's Developer Cards
   app.get('/api/employers/cards', verifyJwt, function(req, res) {
-    knex.select('developers_id', '*')
+    knex.select('developers_id')
     .from('matches')
-      .fullOuterJoin('developers', 'developers.id', 'developers_id')
-      .where({employer_interest: null})
+    .where({positions_id: req.query.posid, employer_interest: !null})
     .then(function(cards) {
-      var positionCards = [];
+      var developerIds = [];
+
       for (var index = 0; index < cards.length; index++) {
-        if (cards[index].positions_id === null || cards[index].positions_id === req.query.posid) {
-          cards[index].positions_id = req.query.posid;
-          positionCards.push(cards[index]);
-        }
+        developerIds.push( cards[index].developers_id );
       }
-      res.send(positionCards);
+
+      // console.log(cards);
+      knex.select('*')
+      .from('developers')
+      .whereNotIn('id', developerIds)
+      .then(function(positionCards) {
+        res.send(positionCards);
+      })
     }).catch(function(error) {
       console.log(error);
-      res.send('An error occured', error);
+      res.send('Error!', error);
     });
   });
 
