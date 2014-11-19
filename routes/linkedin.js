@@ -41,7 +41,7 @@ var getOauthToken = function(req, res, next){
 
       jwt_token = jwt.sign({ id: developer.id }, 'lalala');
 
-      res.redirect('?jwt_token=' + jwt_token + '&userType=dev');
+      res.redirect('?jwt_token=' + jwt_token + '&userType=dev'+'&isReturning=yes');
 
     } else {
 
