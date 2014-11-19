@@ -94,16 +94,17 @@ module.exports = function(app) {
     }).fetch().then(function(employer) {
       if (!employer) {
         res.send('Invalid username.');
+      } else {
+        bcrypt.compare(req.body.password, employer.attributes.password,
+          function(err, resp) {
+            if (resp === false) {
+              res.send('Incorrect password.');
+            } else {
+              jwt_token = jwt.sign({ id: employer.id }, 'lalala');
+              res.send({jwt: jwt_token});
+            }
+          });
       }
-      bcrypt.compare(req.body.password, employer.attributes.password,
-        function(err, resp) {
-          if (resp === false) {
-            res.send('Incorrect password.');
-          } else {
-            jwt_token = jwt.sign({ id: employer.id }, 'lalala');
-            res.send({jwt: jwt_token});
-          }
-        });
     });
   })
 
