@@ -38,13 +38,12 @@ module.exports = function(app) {
     var devArray = [];
     new Match()
     .where({
-      positions_id: req.body.posid,
+      positions_id: req.query.posid,
       developer_interest: true,
       employer_interest: true
     })
     .fetchAll().then(function(match) {
       match = match.models;
-      console.log('here!', match)
       for(var i=0; i<match.length; i++){
         var dev = match[i].attributes.developers_id;
         devArray.push(dev);
@@ -52,6 +51,7 @@ module.exports = function(app) {
       knex.select('*').from('developers')
         .whereIn('id', devArray)
         .then(function(developers){
+          console.log('here!',  developers);
           res.send(developers);
         })
     })
