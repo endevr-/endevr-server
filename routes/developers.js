@@ -7,7 +7,7 @@ var knex          = require('../config/knex.js');
 var verifyJwt = require('./../config/jwtValidation.js');
 
 module.exports = function(app) {
-  
+
   // Retrieve Developer's Opportunity Cards
   app.get('/api/developers/cards', verifyJwt, function(req, res, next) {
     knex.select('positions_id')
@@ -42,7 +42,7 @@ module.exports = function(app) {
     .then(function(match){
       if(!match){
         new Match({
-          developers_id: req.body.devid,
+          developers_id: req.query.id,
           positions_id: req.body.posid,
           developer_interest: req.body.devint,
         }).save().then(function(match){
