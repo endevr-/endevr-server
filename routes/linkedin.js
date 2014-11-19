@@ -41,7 +41,7 @@ var getOauthToken = function(req, res, next){
 
       jwt_token = jwt.sign({ id: developer.id }, 'lalala');
 
-      res.redirect('?jwt_token=' + jwt_token + '&userType=dev'+'&isReturning=yes');
+      res.redirect('?jwt_token=' + jwt_token + '&userType=dev&isReturning=yes');
 
     } else {
 
@@ -84,7 +84,7 @@ var getOauthToken = function(req, res, next){
           lastcard: '0'
         })
         .save().then(function(developer){
-          console.log('SAVED!');
+          console.log('NEW USER SAVED!');
 
           jwt_token = jwt.sign({ id: developer.id }, 'lalala');
 
