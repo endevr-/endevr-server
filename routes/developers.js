@@ -66,8 +66,9 @@ module.exports = function(app) {
   });
 
   // Retrieve All Developer Matches
-  app.get('/api/developers/matches', verifyJwt, function(req, res, next) {
+  app.get('/api/developers/matches', function(req, res, next) {
     var posArray = [];
+    var empArray = [];
     new Match()
     .where({
       developers_id: req.query.id,
@@ -83,8 +84,17 @@ module.exports = function(app) {
       knex.select('*').from('positions')
         .whereIn('id', posArray)
         .then(function(positions){
-          console.log(positions);
-          res.send(positions);
+          // res.send(positions);
+          for(var i=0; i<positions.length; i++){
+            var emp = positions[i].employers_id;
+            empArray.push(emp);
+          }
+
+          knex.select('*').from('employers')
+            .whereIn('id', empArray)
+            .then(function(employers){
+              res.send({position: positions, employer: employers});
+            })
         })
     })
     .catch(function(error) {
@@ -99,7 +109,6 @@ module.exports = function(app) {
     .fetch()
     .then(function(developer) {
       if (developer) {
-        console.log(developer);
         res.status(200).send(developer);
       } else {
         // No profile Found
