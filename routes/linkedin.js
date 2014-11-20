@@ -85,8 +85,7 @@ var getOauthToken = function(req, res, next){
           education: education,
           positions: positions,
           linkedin: profile.id,
-          github: null,
-          lastcard: '0'
+          github: null
         })
         .save().then(function(developer){
           console.log('NEW USER SAVED!');
