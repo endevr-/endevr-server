@@ -43,8 +43,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
       salary: "$2",
       description: "chyea boi!",
       time: "huh?",
-      company_size: 2,
-      lastcard: 0
+      company_size: 2
     })
     .save().then(function(position){
       console.log('position created! ' + position.id);
@@ -59,8 +58,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
       salary: "$1",
       description: "kinda boi!",
       time: "huh?",
-      company_size: 1,
-      lastcard: 0
+      company_size: 1
     })
     .save().then(function(position2){
       console.log('position created! ' + position2.id);
@@ -82,8 +80,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
       salary: "$0.25",
       description: "poop",
       time: "huh?",
-      company_size: 2,
-      lastcard: 0
+      company_size: 2
     })
     .save().then(function(position){
       console.log('position created! ' + position.id);
@@ -98,8 +95,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
       salary: "$0.001",
       description: "kinda boi!",
       time: "huh?",
-      company_size: 1,
-      lastcard: 0
+      company_size: 1
     })
     .save().then(function(position2){
       console.log('position created! ' + position2.id);
