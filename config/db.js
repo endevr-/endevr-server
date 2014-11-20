@@ -5,6 +5,7 @@ knex.schema.hasTable('developers').then(function(exists) {
     return knex.schema.createTable('developers', function(t) {
       t.increments('id').primary();
       //linkedin
+      t.string('email');
       t.string('fname');
       t.string('lname');
       t.string('location');
