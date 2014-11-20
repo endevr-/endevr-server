@@ -64,7 +64,7 @@ knex.schema.hasTable('positions').then(function(exists) {
       t.string('position').notNullable();
       t.string('location').notNullable();
       t.string('required').notNullable();
-      t.string('prefered').notNullable();
+      t.string('preferred').notNullable();
       t.string('salary').notNullable();
       t.string('description').notNullable();
       t.string('time').notNullable();

@@ -105,7 +105,7 @@ module.exports = function(app) {
             if (resp === false) {
               res.send('Incorrect password.');
             } else {
-              jwt_token = jwt.sign({ id: employer.id }, 'lalala');
+              jwt_token = jwt.sign({ id: employer.id}, 'lalala');
               res.send({jwt: jwt_token});
             }
           });
@@ -126,7 +126,7 @@ module.exports = function(app) {
             email: email,
             password: hash
           }).save().then(function(employer) {
-            jwt_token = jwt.sign({ id: employer.id }, 'lalala');
+            jwt_token = jwt.sign({ id: employer.id}, 'lalala');
             res.send({jwt: jwt_token});
           })
         });
@@ -205,7 +205,7 @@ module.exports = function(app) {
           position: req.body.position,
           location: req.body.location,
           required: req.body.required,
-          prefered: req.body.prefered,
+          preferred: req.body.preferred,
           salary: req.body.salary,
           description: req.body.description,
           time: req.body.time,

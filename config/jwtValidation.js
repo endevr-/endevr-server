@@ -6,6 +6,7 @@ var jwtValidation = function(req, res, next) {
   var token = req.query.jwt_token || req.body.jwt_token;
   var usertype = req.query.usertype || req.body.usertype;
   var id;
+  var error;
 
   console.log('token: ' + token);
   console.log('type: ' + usertype);
@@ -13,9 +14,11 @@ var jwtValidation = function(req, res, next) {
 
   if ( token && usertype ) {
     jwt.verify(token, 'lalala', function(err, decoded) {
-      if (err) { res.redirect('/unauthorized'); }
-
-      if (decoded.id) {
+      if (err) { 
+        console.log(err);
+        error = err;
+        res.redirect('/unauthorized'); 
+      } else if (decoded.id) {
         id = decoded.id;
       } else {
         res.redirect('/unauthorized');
@@ -23,8 +26,7 @@ var jwtValidation = function(req, res, next) {
 
     });
 
-    if (usertype === 'dev') {
-
+    if (usertype === 'dev' && !error) {
       new Developer({ id: id })
         .fetch()
         .then(function(developer) {
@@ -37,7 +39,7 @@ var jwtValidation = function(req, res, next) {
           }
         });
 
-    } else {
+    } else if (usertype === 'emp' && !error){
 
       new Employer({ id: id })
         .fetch()

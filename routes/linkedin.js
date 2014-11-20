@@ -39,7 +39,7 @@ var getOauthToken = function(req, res, next){
 
       console.log('user already exists: ', {id: developer.id});
 
-      jwt_token = jwt.sign({ id: developer.id }, 'lalala');
+      jwt_token = jwt.sign({ id: developer.id}, 'lalala');
 
       res.redirect('?jwt_token=' + jwt_token + '&userType=dev&isReturning=yes');
 
@@ -86,7 +86,7 @@ var getOauthToken = function(req, res, next){
         .save().then(function(developer){
           console.log('NEW USER SAVED!');
 
-          jwt_token = jwt.sign({ id: developer.id }, 'lalala');
+          jwt_token = jwt.sign({ id: developer.id}, 'lalala');
 
           res.redirect('?jwt_token=' + jwt_token + '&userType=dev');
 
