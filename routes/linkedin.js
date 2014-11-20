@@ -47,7 +47,7 @@ var getOauthToken = function(req, res, next){
 
         profile = profileData._json;
 
-        console.log(profile);
+        // console.log(profile);
 
         var skills = {};
         if(profile.skills !== undefined){
