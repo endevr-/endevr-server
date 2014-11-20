@@ -37,27 +37,40 @@ module.exports = function(app) {
 
   // Update Developer Decision for a Match
   app.post('/api/developers/matches', verifyJwt, function(req, res, next) {
-    new Match({developers_id: req.body.devid, positions_id: req.body.posid})
+    var employer_interest;
+
+    new Match({developers_id: req.query.id, positions_id: req.body.posid})
     .fetch()
     .then(function(match){
+      if (match) {
+        employer_interest = match.attributes.employer_interest;
+        console.log('INTEREST: ' + employer_interest);
+        console.log(match);
+      }
+
       if(!match){
         new Match({
           developers_id: req.query.id,
           positions_id: req.body.posid,
           developer_interest: req.body.devint,
         }).save().then(function(match){
-          res.send({id: match.id});
+          res.send({id: match.id, match: false});
         }).catch(function(error){
           res.send(error);
         })
       } else {
         new Match({
           id: match.id,
-          developers_id: req.body.devid,
+          developers_id: req.query.id,
           positions_id: req.body.posid,
           developer_interest: req.body.devint,
         }).save().then(function(match){
-          res.send({id: match.id});
+          console.log(match);
+          if (match.attributes.developer_interest === true && employer_interest === true) {
+            res.send({id: match.id, match: true});
+          } else {
+            res.send({id: match.id, match: false});
+          }
         }).catch(function(error){
           res.send(error);
         })
@@ -97,10 +110,10 @@ module.exports = function(app) {
 
               for(var i = 0; i < positions.length; i++) {
                 var job = positions[i];
-                
+
                 for(var e = 0; e < employers.length; e++) {
                   var employer = employers[e];
-                  
+
                   if(employer['id'] === job['employers_id']) {
                     job['employerInfo'] = employer;
                     break;
@@ -108,7 +121,7 @@ module.exports = function(app) {
                 }
                 employerMatches.push(job);
               }
-               
+
               res.send(employerMatches);
             })
         })
