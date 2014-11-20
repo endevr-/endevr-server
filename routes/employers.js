@@ -180,15 +180,37 @@ module.exports = function(app) {
   });
 
   // Retrieve Employer Job Positiions
-  app.get('/api/employers/positions', verifyJwt, function(req, res, next) {
+  app.get('/api/employers/positions', function(req, res, next) {
+    var empArray = [];
+
     new Position()
     .where({
-      employers_id: req.query.id
+      employers_id: 102
     })
     .fetchAll().then(function(positions) {
-      // console.log(positions);
-      res.send(positions);
-    })
+      positions = positions.models;  
+      for(var i=0; i<positions.length; i++){
+        var emp = positions[i].attributes.employers_id;
+        empArray.push(emp);
+      }
+      knex.select('*').from('employers')
+        .whereIn('id', empArray)
+        .then(function(employers){
+          var employerMatches = [];
+          for(var i = 0; i < positions.length; i++) {
+            var job = positions[i].attributes;
+            for(var e = 0; e < employers.length; e++) {
+              var employer = employers[e];
+              if(employer['id'] === job['employers_id']) {
+                job['employerInfo'] = employer;
+                break;
+              }
+            }
+            employerMatches.push(job);
+          }
+          res.send(employerMatches);
+        })
+      })
     .catch(function(error) {
       res.send('An error occured', error);
     });
