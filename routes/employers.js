@@ -63,16 +63,24 @@ module.exports = function(app) {
 
   // Update Employer Decision for a Match
   app.post('/api/employers/matches', verifyJwt, function(req, res, next) {
+      var developer_interest;
+
       new Match({developers_id: req.body.devid, positions_id: req.body.posid})
       .fetch()
       .then(function(match){
+        if (match) {
+          developer_interest = match.attributes.developer_interest;
+          console.log('INTEREST: ' + developer_interest);
+          console.log(match);
+        }
+
         if(!match){
           new Match({
             developers_id: req.body.devid,
             positions_id: req.body.posid,
             employer_interest: req.body.empint,
           }).save().then(function(match){
-            res.send({id: match.id});
+            res.send({id: match.id, match: false});
           }).catch(function(error){
             res.send(error);
           })
@@ -83,7 +91,12 @@ module.exports = function(app) {
             positions_id: req.body.posid,
             employer_interest: req.body.empint,
           }).save().then(function(match){
-            res.send({id: match.id});
+            console.log(match);
+            if (developer_interest === true && match.attributes.employer_interest === true) {
+              res.send({id: match.id, match: true});
+            } else {
+              res.send({id: match.id, match: false});
+            }
           }).catch(function(error){
             res.send(error);
           })
