@@ -180,7 +180,7 @@ module.exports = function(app) {
   });
 
   // Retrieve Employer Job Positiions
-  app.get('/api/employers/positions', function(req, res, next) {
+  app.get('/api/employers/positions', verifyJwt, function(req, res, next) {
     var empArray = [];
 
     new Position()
