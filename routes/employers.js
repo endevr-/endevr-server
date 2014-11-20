@@ -185,7 +185,7 @@ module.exports = function(app) {
 
     new Position()
     .where({
-      employers_id: 102
+      employers_id: req.query.id
     })
     .fetchAll().then(function(positions) {
       positions = positions.models;  
