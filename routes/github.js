@@ -1,7 +1,7 @@
 var passport  = require('passport');
 var jwt       = require('jsonwebtoken'); //potentially remove
 var Developer = require('../api/developers/developers.model');
-var gitHubKeys = require('../config/gitHubKeys');
+var gitHubKeys = require('../config/example');
 var profileData;
 var jwt_token;
 var userId;
@@ -11,8 +11,8 @@ module.exports = function(app) {
 var GitHubStrategy = require('passport-github').Strategy;
 
 passport.use(new GitHubStrategy({
-  clientID: gitHubKeys.id,
-  clientSecret: gitHubKeys.secret,
+  clientID: process.env.GITHUB_ID || gitHubKeys.id,
+  clientSecret: process.env.GITHUB_SECRET || gitHubKeys.secret,
   callbackURL: "http://localhost:9000/auth/github/callback",
   scope: ['user', 'repo', 'gist', 'read:org'],
   // callback function will be ran once authentication is successful
