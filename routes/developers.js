@@ -66,7 +66,7 @@ module.exports = function(app) {
   });
 
   // Retrieve All Developer Matches
-  app.get('/api/developers/matches', function(req, res, next) {
+  app.get('/api/developers/matches', verifyJwt, function(req, res, next) {
     var posArray = [];
     var empArray = [];
     new Match()
@@ -93,7 +93,23 @@ module.exports = function(app) {
           knex.select('*').from('employers')
             .whereIn('id', empArray)
             .then(function(employers){
-              res.send({position: positions, employer: employers});
+              var employerMatches = [];
+
+              for(var i = 0; i < positions.length; i++) {
+                var job = positions[i];
+                
+                for(var e = 0; e < employers.length; e++) {
+                  var employer = employers[e];
+                  
+                  if(employer['id'] === job['employers_id']) {
+                    job['employerInfo'] = employer;
+                    break;
+                  }
+                }
+                employerMatches.push(job);
+              }
+               
+              res.send(employerMatches);
             })
         })
     })
