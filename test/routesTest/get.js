@@ -44,34 +44,38 @@ describe('GET', function() {
 
   describe('/api/developers', function() {
 
-    it('response body should exist', function(done) {
+    it('/cards should return list of developers', function(done) {
       request(endevrServer)
         .get('/api/developers/cards'+queryParams)
         .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
         .expect(200)
+        .expect(function(res) {
+          res.body.should.have.lengthOf(4);
+        })
+        .end(function(err, res) {
+          should.exist(res.body);
+          done();
+        })
+    });
+
+    it('/cards should not provide info when no JWT is present', function(done) {
+      request(endevrServer)
+        .get('/api/developers/cards')
+        .set('Accept', 'application/json')
+        .expect(401)
+        .expect(function(res) {
+          res.body.should.equal('GTFO MANG.');
+        })
         .end(function(err, res) {
           should.exist(res.body);
           done();
         });
     });
 
-    it('should return list of developers', function(done) {
-      request(endevrServer)
-        .get('/api/developers')
-        .set('Accept', 'application/json')
-        .expect(function(res) {
-          res.body.should.have.lengthOf(4);
-        })
-        .end(function(err, res) {
-          done();
-        })
-    });
-
   });
 
   //
-  //  API Endpoint for Developers
+  //  API Endpoint for Employers
   //
 
   // describe('/api/developers/:id/cards', function() {
