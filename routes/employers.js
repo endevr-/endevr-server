@@ -244,8 +244,7 @@ module.exports = function(app) {
           salary: req.body.salary,
           description: req.body.description,
           time: req.body.time,
-          company_size: req.body.company_size,
-          lastcard: req.body.lastcard
+          company_size: req.body.company_size
         })
         .save().then(function(position){
           res.send({id: position.id});

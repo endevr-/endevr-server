@@ -28,7 +28,6 @@ knex.schema.hasTable('developers').then(function(exists) {
       t.string('public_gists');
       t.string('linkedin');
       t.string('github');
-      t.integer('lastcard');
     }).then(function() {
       console.log('created developers table.');
     });
@@ -70,7 +69,6 @@ knex.schema.hasTable('positions').then(function(exists) {
       t.string('description').notNullable();
       t.string('time').notNullable();
       t.string('company_size').notNullable();
-      t.integer('lastcard').notNullable();
     }).then(function() {
       console.log('created positions table.');
     });
