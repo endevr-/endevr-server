@@ -1,7 +1,7 @@
 var passport  = require('passport');
 var jwt       = require('jsonwebtoken');
 var Developer = require('../api/developers/developers.model');
-var linkedInKeys = require('../config/example');
+var linkedInKeys = require('../config/LinkedInKeys');
 var profileData;
 
 module.exports = function(app) {
