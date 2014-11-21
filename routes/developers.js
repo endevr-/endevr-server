@@ -26,6 +26,8 @@ module.exports = function(app) {
       .from('positions')
       .whereNotIn('id', positionIds)
       .then(function(positionCards) {
+        // console.log('here');
+        // console.log(positionCards);
         res.send(positionCards);
       })
     }).catch(function(error) {

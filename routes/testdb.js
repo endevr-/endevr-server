@@ -10,16 +10,16 @@ module.exports = function(app) {
 knex('employers')
   .del()
   .then(function(result) {
-    console.log("deleted employers");
+    // console.log("deleted employers");
   });
 knex('positions')
   .del()
   .then(function(result) {
-    console.log("deleted positions");
+    // console.log("deleted positions");
   });
 knex('matches')
   .del().then(function(result) {
-    console.log("deleted matches");
+    // console.log("deleted matches");
   });
 
 var testPW;
@@ -32,7 +32,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
     email: 'test@test.com',
     password: testPW
   }).save().then(function(employer) {
-    console.log('employer created! ' + employer.id);
+    // console.log('employer created! ' + employer.id);
     employer1 = employer.id;
     new Position({
       employers_id: employer1,
@@ -46,7 +46,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
       company_size: 2
     })
     .save().then(function(position){
-      console.log('position created! ' + position.id);
+      // console.log('position created! ' + position.id);
     });
 
     new Position({
@@ -61,7 +61,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
       company_size: 1
     })
     .save().then(function(position2){
-      console.log('position created! ' + position2.id);
+      // console.log('position created! ' + position2.id);
     });
   });
 
@@ -69,7 +69,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
     email: 'test2@test.com',
     password: testPW
   }).save().then(function(employer2) {
-    console.log('employer created! ' + employer2.id);
+    // console.log('employer created! ' + employer2.id);
     employer2 = employer2.id;
     new Position({
       employers_id: employer2,
@@ -83,7 +83,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
       company_size: 2
     })
     .save().then(function(position){
-      console.log('position created! ' + position.id);
+      // console.log('position created! ' + position.id);
     });
 
     new Position({
@@ -98,14 +98,14 @@ bcrypt.hash('test', null, null, function(err, hash) {
       company_size: 1
     })
     .save().then(function(position2){
-      console.log('position created! ' + position2.id);
+      // console.log('position created! ' + position2.id);
       new Developer({
         fname: 'Kyser',
         lname: 'Soze',
         location: 'Unknown'
       })
       .save().then(function(developer){
-      console.log('developer created! ' + developer.id);  
+      // console.log('developer created! ' + developer.id);
       new Match({
         developers_id: developer.id,
         positions_id: position2.id,
@@ -113,7 +113,7 @@ bcrypt.hash('test', null, null, function(err, hash) {
         employer_interest: true,
       })
       .save().then(function(match1){
-        console.log('match created! ' + match1.id);
+        // console.log('match created! ' + match1.id);
       });
       })
 
