@@ -201,7 +201,7 @@ module.exports = function(app) {
       employers_id: req.query.id
     })
     .fetchAll().then(function(positions) {
-      positions = positions.models;  
+      positions = positions.models;
       for(var i=0; i<positions.length; i++){
         var emp = positions[i].attributes.employers_id;
         empArray.push(emp);
@@ -214,8 +214,8 @@ module.exports = function(app) {
             var job = positions[i].attributes;
             for(var e = 0; e < employers.length; e++) {
               var employer = employers[e];
-              if(employer['id'] === job['employers_id']) {
-                job['employerInfo'] = employer;
+              if(employer.id === job.employers_id) {
+                job.employerInfo = employer;
                 break;
               }
             }

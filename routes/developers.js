@@ -114,8 +114,8 @@ module.exports = function(app) {
                 for(var e = 0; e < employers.length; e++) {
                   var employer = employers[e];
 
-                  if(employer['id'] === job['employers_id']) {
-                    job['employerInfo'] = employer;
+                  if(employer.id === job.employers_id) {
+                    job.employerInfo = employer;
                     break;
                   }
                 }
