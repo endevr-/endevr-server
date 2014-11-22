@@ -9,6 +9,13 @@ var newPosition;
 
 module.exports = function(app) {
 
+  knex('employers')
+    .whereNotIn('email', ['test@test.com', 'test2@test.com'])
+    .del()
+    .then(function(result) {
+        // console.log("deleted employers except for 2");
+    });
+
   knex('positions')
     .whereNotIn('position', ['Full Stack Software Engineer 1'])
     .del()

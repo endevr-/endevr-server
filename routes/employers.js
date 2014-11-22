@@ -183,7 +183,7 @@ module.exports = function(app) {
               // console.log('UPDATED!');
               res.send({'success': 'success'});
             }).catch(function(error) {
-              res.send({'etrror': 'error'});
+              res.send({'error': 'error'});
             });
 
         } else {

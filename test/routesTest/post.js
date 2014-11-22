@@ -58,6 +58,9 @@ describe('POST', function() {
 
   describe('/api/employers', function() {
 
+    var jwt;
+    var id;
+
     it('/matches should tell you if there is a match', function(done) {
       request(endevrServer)
         .post('/api/employers/matches'+input.empqueryParams)
@@ -104,6 +107,67 @@ describe('POST', function() {
               })
         .end(function(err, res) {
           res.headers.location.should.equal('/unauthorized');
+          done();
+        });
+    });
+
+    it('/login should log in an existing employer', function(done) {
+      request(endevrServer)
+        .post('/api/employers/login')
+        .send({
+                email: 'test@test.com',
+                password: 'test'
+              })
+        .expect(200)
+        .expect(function(res) {
+          // console.log(res.body);
+          jwt = res.body.jwt;
+        })
+        .end(function(err, res) {
+          should.exist(jwt);
+          done();
+        })
+    });
+
+    jwt = undefined;
+
+    it('/new should create a new employer', function(done) {
+      request(endevrServer)
+        .post('/api/employers/new')
+        .send({
+                email: 'test3@test.com',
+                password: 'test'
+              })
+        .expect(200)
+        .expect(function(res) {
+          jwt = res.body.jwt;
+        })
+        .end(function(err, res) {
+          should.exist(jwt);
+          done();
+        })
+    });
+
+    it('/positions should create a new position', function(done) {
+      request(endevrServer)
+        .post('/api/employers/positions'+input.empqueryParams)
+        .send({
+                employers_id: input.empid,
+                position: 'UI Designer',
+                location: 'Palo Alto, CA',
+                required: 'Photoshop, Sketch',
+                preferred: 'Illustrator',
+                salary: '$80k',
+                description: 'Looking for talented and motivated UI Designer.',
+                time: 'Full-Time',
+                company_size: '30+'
+              })
+        .expect(200)
+        .expect(function(res) {
+          id = res.body.id;
+        })
+        .end(function(err, res) {
+          should.exist(id);
           done();
         });
     });
