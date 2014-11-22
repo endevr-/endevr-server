@@ -1,14 +1,17 @@
-var should = require('should');
-var request = require('supertest');
-var bodyParser = require('body-parser');
-var express = require('express');
-var jwt = require('jsonwebtoken');
+var should        = require('should');
+var request      = require('supertest');
+var bodyParser   = require('body-parser');
+var express      = require('express');
+var jwt          = require('jsonwebtoken');
 var endevrServer = express();
+var Developer    = require('../../api/developers/developers.model');
 
 endevrServer.use(bodyParser.json());
 require('./../../routes/index')(endevrServer);
 
-var jwt_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjAsImlhdCI6MTQxNjYwMDI3NH0.4RjXqLmzCADpTA694x-TxFx7B81ZB5lJ7XaPu5jf4yg';
+// find the id of the developer you want to test.
+var id = 58;
+var jwt_token = jwt.sign({ id: id}, 'lalala');
 
 var queryParams = '?jwt_token=' + jwt_token + '&usertype=dev';
 
@@ -47,16 +50,19 @@ describe('GET', function() {
 
   describe('/api/developers', function() {
 
+    var body;
+    var bodyId;
+
     it('/cards should return list of developers', function(done) {
       request(endevrServer)
         .get('/api/developers/cards'+queryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
-          res.body.should.have.lengthOf(4);
+          body = res.body;
         })
         .end(function(err, res) {
-          should.exist(res.body);
+          body.should.have.lengthOf(3);
           done();
         })
     });
@@ -64,13 +70,9 @@ describe('GET', function() {
     it('/cards should not provide info when no JWT is present', function(done) {
       request(endevrServer)
         .get('/api/developers/cards')
-        .set('Accept', 'application/json')
-        .expect(401)
-        .expect(function(res) {
-          res.body.should.equal('GTFO MANG.');
-        })
+        .set('Accept', 'text/html: charset=utf-8')
         .end(function(err, res) {
-          should.exist(res.body);
+          res.header.location.should.equal('/unauthorized');
           done();
         });
     });
@@ -81,15 +83,10 @@ describe('GET', function() {
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
-          var id;
-          jwt.verify(jwt_token, 'lalala', function(err, decoded) {
-            if (decoded.id) {
-              id = decoded.id;
-            }
-          });
-          res.body.id.should.equal(id);
+          bodyId = res.body.id
         })
         .end(function(err, res) {
+          bodyId.should.equal(id);
           done();
         });
     });
@@ -97,13 +94,9 @@ describe('GET', function() {
     it('/profile should not provide info when no JWT is present', function(done) {
       request(endevrServer)
         .get('/api/developers/profile')
-        .set('Accept', 'application/json')
-        .expect(401)
-        .expect(function(res) {
-          res.body.should.equal('GTFO MANG.');
-        })
+        .set('Accept', 'text/html: charset=utf-8')
         .end(function(err, res) {
-          should.exist(res.body);
+          res.header.location.should.equal('/unauthorized');
           done();
         });
     });
@@ -114,9 +107,10 @@ describe('GET', function() {
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
-          res.body.should.have.lengthOf(0);
+          body = res.body;
         })
         .end(function(err, res) {
+          body.should.have.lengthOf(1);
           done();
         });
     });
@@ -124,13 +118,9 @@ describe('GET', function() {
     it('/matches should not provide info when no JWT is present', function(done) {
       request(endevrServer)
         .get('/api/developers/matches')
-        .set('Accept', 'application/json')
-        .expect(401)
-        .expect(function(res) {
-          res.body.should.equal('GTFO MANG.');
-        })
+        .set('Accept', 'text/html: charset=utf-8')
         .end(function(err, res) {
-          should.exist(res.body);
+          res.header.location.should.equal('/unauthorized');
           done();
         });
     });

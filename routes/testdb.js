@@ -73,7 +73,7 @@ module.exports = function(app) {
               })
               .save()
               .then(function(newDeveloper) {
-                console.log("developer created! " + newDeveloper.id);
+                // console.log("developer created! " + newDeveloper.id);
                 developer = newDeveloper;
 
                 new Match({
@@ -85,6 +85,16 @@ module.exports = function(app) {
                 .save().then(function(match1){
                   // console.log('match created! ' + match1.id);
                 });
+              });
+            } else {
+              new Match({
+                developers_id: developer.id,
+                positions_id: newPosition.id,
+                developer_interest: true,
+                employer_interest: true,
+              })
+              .save().then(function(match1){
+                // console.log('match created! ' + match1.id);
               });
             }
 
