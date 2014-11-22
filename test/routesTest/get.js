@@ -1,25 +1,9 @@
-var should        = require('should');
+var should       = require('should');
 var request      = require('supertest');
-var bodyParser   = require('body-parser');
-var express      = require('express');
 var jwt          = require('jsonwebtoken');
-var endevrServer = express();
-var Developer    = require('../../api/developers/developers.model');
+var endevrServer = require('./../testServer');
+var input        = require('./../testConfig');
 
-endevrServer.use(bodyParser.json());
-require('./../../routes/index')(endevrServer);
-
-// find the id of the developer you want to test.
-var devid = 58;
-var devjwt_token = jwt.sign({ id: devid}, 'lalala');
-var devqueryParams = '?jwt_token=' + devjwt_token + '&usertype=dev';
-
-// find the id of the employer you want to test.
-var empid = 127;
-var empposid = 717;
-var empjwt_token = jwt.sign({ id: empid}, 'lalala');
-var empqueryParams = '?jwt_token=' + empjwt_token + '&usertype=emp';
-var empqueryPos = '&posid='+empposid;
 
 describe('GET', function() {
 
@@ -61,7 +45,7 @@ describe('GET', function() {
 
     it('/cards should return list of employers for a developer', function(done) {
       request(endevrServer)
-        .get('/api/developers/cards'+devqueryParams)
+        .get('/api/developers/cards'+input.devqueryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
@@ -85,14 +69,14 @@ describe('GET', function() {
 
     it("/profile should return a developer's profile", function(done) {
       request(endevrServer)
-        .get('/api/developers/profile'+devqueryParams)
+        .get('/api/developers/profile'+input.devqueryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
           bodyId = res.body.id;
         })
         .end(function(err, res) {
-          bodyId.should.equal(devid);
+          bodyId.should.equal(input.devid);
           done();
         });
     });
@@ -109,7 +93,7 @@ describe('GET', function() {
 
     it("/matches should return a developer's matches", function(done) {
       request(endevrServer)
-        .get('/api/developers/matches'+devqueryParams)
+        .get('/api/developers/matches'+input.devqueryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
@@ -144,7 +128,7 @@ describe('GET', function() {
 
     it('/cards should return list of developers for an employer', function(done) {
       request(endevrServer)
-        .get('/api/employers/cards'+empqueryParams+empqueryPos)
+        .get('/api/employers/cards'+input.empqueryParams+input.empqueryPos)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
@@ -168,14 +152,14 @@ describe('GET', function() {
 
     it("/profile should return a developer's profile", function(done) {
       request(endevrServer)
-        .get('/api/employers/profile'+empqueryParams)
+        .get('/api/employers/profile'+input.empqueryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
           bodyId = res.body.id;
         })
         .end(function(err, res) {
-          bodyId.should.equal(empid);
+          bodyId.should.equal(input.empid);
           done();
         });
     });
@@ -192,7 +176,7 @@ describe('GET', function() {
 
     it("/matches should return a employer's matches", function(done) {
       request(endevrServer)
-        .get('/api/employers/matches'+empqueryParams+empqueryPos)
+        .get('/api/employers/matches'+input.empqueryParams+input.empqueryPos)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
@@ -216,7 +200,7 @@ describe('GET', function() {
 
     it('/positions should provide list of jobs belonging to an employer', function(done) {
       request(endevrServer)
-        .get('/api/employers/positions'+empqueryParams)
+        .get('/api/employers/positions'+input.empqueryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
