@@ -214,6 +214,30 @@ describe('GET', function() {
         });
     });
 
+    it('/positions should provide list of jobs belonging to an employer', function(done) {
+      request(endevrServer)
+        .get('/api/employers/positions'+empqueryParams)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .expect(function(res) {
+          body = res.body;
+        })
+        .end(function(err, res) {
+          body.length.should.equal(2);
+          done();
+        });
+    });
+
+    it('/positions should not provide info when no JWT is present', function(done) {
+      request(endevrServer)
+        .get('/api/employers/positions')
+        .set('Accept', 'text/html: charset=utf-8')
+        .end(function(err, res) {
+          res.headers.location.should.equal('/unauthorized');
+          done();
+        });
+    });
+
   });
 
 });
