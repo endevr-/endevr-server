@@ -72,7 +72,7 @@ describe('GET', function() {
         .get('/api/developers/cards')
         .set('Accept', 'text/html: charset=utf-8')
         .end(function(err, res) {
-          res.header.location.should.equal('/unauthorized');
+          res.headers.location.should.equal('/unauthorized');
           done();
         });
     });
@@ -83,7 +83,7 @@ describe('GET', function() {
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
-          bodyId = res.body.id
+          bodyId = res.body.id;
         })
         .end(function(err, res) {
           bodyId.should.equal(id);
@@ -96,7 +96,7 @@ describe('GET', function() {
         .get('/api/developers/profile')
         .set('Accept', 'text/html: charset=utf-8')
         .end(function(err, res) {
-          res.header.location.should.equal('/unauthorized');
+          res.headers.location.should.equal('/unauthorized');
           done();
         });
     });
@@ -110,7 +110,7 @@ describe('GET', function() {
           body = res.body;
         })
         .end(function(err, res) {
-          body.should.have.lengthOf(1);
+          body.length.should.equal(1);
           done();
         });
     });
@@ -120,7 +120,7 @@ describe('GET', function() {
         .get('/api/developers/matches')
         .set('Accept', 'text/html: charset=utf-8')
         .end(function(err, res) {
-          res.header.location.should.equal('/unauthorized');
+          res.headers.location.should.equal('/unauthorized');
           done();
         });
     });
@@ -132,94 +132,6 @@ describe('GET', function() {
   //
 
   describe('/api/employers', function() {
-
-    // it('/cards should return list of employers', function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/cards'+queryParams)
-    //     .set('Accept', 'application/json')
-    //     .expect(200)
-    //     .expect(function(res) {
-    //       res.body.should.have.lengthOf(4);
-    //     })
-    //     .end(function(err, res) {
-    //       should.exist(res.body);
-    //       done();
-    //     })
-    // });
-    //
-    // it('/cards should not provide info when no JWT is present', function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/cards')
-    //     .set('Accept', 'application/json')
-    //     .expect(401)
-    //     .expect(function(res) {
-    //       res.body.should.equal('GTFO MANG.');
-    //     })
-    //     .end(function(err, res) {
-    //       should.exist(res.body);
-    //       done();
-    //     });
-    // });
-    //
-    // it("/profile should return a developer's profile", function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/profile'+queryParams)
-    //     .set('Accept', 'application/json')
-    //     .expect(200)
-    //     .expect(function(res) {
-    //       var id;
-    //       jwt.verify(jwt_token, 'lalala', function(err, decoded) {
-    //         if (decoded.id) {
-    //           id = decoded.id;
-    //         }
-    //       });
-    //       res.body.id.should.equal(id);
-    //     })
-    //     .end(function(err, res) {
-    //       done();
-    //     });
-    // });
-    //
-    // it('/profile should not provide info when no JWT is present', function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/profile')
-    //     .set('Accept', 'application/json')
-    //     .expect(401)
-    //     .expect(function(res) {
-    //       res.body.should.equal('GTFO MANG.');
-    //     })
-    //     .end(function(err, res) {
-    //       should.exist(res.body);
-    //       done();
-    //     });
-    // });
-    //
-    // it("/matches should return a developer's matches", function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/matches'+queryParams)
-    //     .set('Accept', 'application/json')
-    //     .expect(200)
-    //     .expect(function(res) {
-    //       res.body.should.have.lengthOf(0);
-    //     })
-    //     .end(function(err, res) {
-    //       done();
-    //     });
-    // });
-    //
-    // it('/matches should not provide info when no JWT is present', function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/matches')
-    //     .set('Accept', 'application/json')
-    //     .expect(401)
-    //     .expect(function(res) {
-    //       res.body.should.equal('GTFO MANG.');
-    //     })
-    //     .end(function(err, res) {
-    //       should.exist(res.body);
-    //       done();
-    //     });
-    // });
 
   });
 
