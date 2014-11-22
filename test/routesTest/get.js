@@ -54,7 +54,7 @@ describe('GET', function() {
         .end(function(err, res) {
           body.should.have.lengthOf(3);
           done();
-        })
+        });
     });
 
     it('/cards should not provide info when no JWT is present', function(done) {
@@ -137,7 +137,7 @@ describe('GET', function() {
         .end(function(err, res) {
           body.should.have.lengthOf(0);
           done();
-        })
+        });
     });
 
     it('/cards should not provide info when no JWT is present', function(done) {

@@ -46,8 +46,8 @@ module.exports = function(app) {
     .then(function(match){
       if (match) {
         employer_interest = match.attributes.employer_interest;
-        console.log('INTEREST: ' + employer_interest);
-        console.log(match);
+        // console.log('INTEREST: ' + employer_interest);
+        // console.log(match);
       }
 
       if(!match){
@@ -67,7 +67,7 @@ module.exports = function(app) {
           positions_id: req.body.posid,
           developer_interest: req.body.devint,
         }).save().then(function(match){
-          console.log(match);
+          // console.log(match);
           if (match.attributes.developer_interest === true && employer_interest === true) {
             res.send({id: match.id, match: true});
           } else {
@@ -161,7 +161,7 @@ module.exports = function(app) {
           new Developer({ id: req.query.id })
             .save(updatedData)
             .then(function(developer) {
-              console.log('UPDATED!');
+              // console.log('UPDATED!');
               res.send('Success!');
             }).catch(function(error) {
               res.send('An error occured', error);
