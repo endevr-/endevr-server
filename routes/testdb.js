@@ -9,11 +9,6 @@ var newPosition;
 
 module.exports = function(app) {
 
-  knex('positions')
-    .del()
-    .then(function(result) {
-      // console.log("deleted positions");
-    });
   knex('matches')
     .del().then(function(result) {
       // console.log("deleted matches");
@@ -43,6 +38,8 @@ module.exports = function(app) {
         })
       }
 
+      var foundPosition;
+
       new Position({
         employers_id: employer.id,
         position: "Full Stack Software Engineer",
@@ -54,52 +51,70 @@ module.exports = function(app) {
         time: "Full-Time",
         company_size: '100+'
       })
-      .save().then(function(position){
-        // console.log('position created! ' + position.id);
-        newPosition = position;
-
-        new Developer({
-          fname: 'Kyser',
-          lname: 'Soze'
+        .fetch()
+        .then(function(position) {
+          if (!position) {
+            new Position({
+              employers_id: employer.id,
+              position: "Full Stack Software Engineer",
+              location: "San Francisco, CA",
+              required: "Ruby on Rails, Postgres",
+              preferred: "Bookshelf, JavaScript, AngularJS",
+              salary: "$100k",
+              description: "Our company needs a full stack software engineer for our B2B platform.",
+              time: "Full-Time",
+              company_size: '100+'
+            }).save().then(function(newPosition) {
+              foundPosition = newPosition;
+            });
+          } else {
+            foundPosition = position;
+          }
         })
-          .fetch()
-          .then(function(developer) {
-            if (!developer) {
-              new Developer({
-                fname: 'Kyser',
-                lname: 'Soze',
-                email: 'example@developer.com',
-                location: 'San Francisco, CA'
-              })
-              .save()
-              .then(function(newDeveloper) {
-                // console.log("developer created! " + newDeveloper.id);
-                developer = newDeveloper;
+          .then(function() {
+            new Developer({
+              fname: 'Kyser',
+              lname: 'Soze'
+            })
+              .fetch()
+              .then(function(developer) {
+                if (!developer) {
+                  new Developer({
+                    fname: 'Kyser',
+                    lname: 'Soze',
+                    email: 'example@developer.com',
+                    location: 'San Francisco, CA'
+                  })
+                  .save()
+                  .then(function(newDeveloper) {
+                    // console.log("developer created! " + newDeveloper.id);
+                    developer = newDeveloper;
 
-                new Match({
-                  developers_id: developer.id,
-                  positions_id: newPosition.id,
-                  developer_interest: true,
-                  employer_interest: true,
-                })
-                .save().then(function(match1){
-                  // console.log('match created! ' + match1.id);
-                });
-              });
-            } else {
-              new Match({
-                developers_id: developer.id,
-                positions_id: newPosition.id,
-                developer_interest: true,
-                employer_interest: true,
-              })
-              .save().then(function(match1){
-                // console.log('match created! ' + match1.id);
-              });
-            }
+                    new Match({
+                      developers_id: developer.id,
+                      positions_id: foundPosition.id,
+                      developer_interest: true,
+                      employer_interest: true,
+                    })
+                    .save().then(function(match1){
+                      // console.log('match created! ' + match1.id);
+                    });
+                  });
+                } else {
+                  new Match({
+                    developers_id: developer.id,
+                    positions_id: foundPosition.id,
+                    developer_interest: true,
+                    employer_interest: true,
+                  })
+                  .save().then(function(match1){
+                    // console.log('match created! ' + match1.id);
+                  });
+                }
 
+              });
           });
-      });
+
 
       new Position({
         employers_id: employer.id,
