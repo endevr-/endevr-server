@@ -5,121 +5,152 @@ var Match         = require('../api/matches/matches.model');
 var knex          = require('../config/knex.js');
 var bcrypt        = require('bcrypt-nodejs');
 
+var newPosition;
+
 module.exports = function(app) {
 
-knex('employers')
-  .del()
-  .then(function(result) {
-    // console.log("deleted employers");
-  });
-knex('positions')
-  .del()
-  .then(function(result) {
-    // console.log("deleted positions");
-  });
-knex('matches')
-  .del().then(function(result) {
-    // console.log("deleted matches");
+  knex('positions')
+    .del()
+    .then(function(result) {
+      // console.log("deleted positions");
+    });
+  knex('matches')
+    .del().then(function(result) {
+      // console.log("deleted matches");
+    });
+
+  var testPW;
+
+  bcrypt.hash('test', null, null, function(err, hash) {
+    testPW = hash;
   });
 
-var testPW;
-var employer1;
-var employer2;
-
-bcrypt.hash('test', null, null, function(err, hash) {
-  testPW = hash;
   new Employer({
     email: 'test@test.com',
-    password: testPW
-  }).save().then(function(employer) {
-    // console.log('employer created! ' + employer.id);
-    employer1 = employer.id;
-    new Position({
-      employers_id: employer1,
-      position: "Full Stack",
-      location: "SF",
-      required: "skillz dat killz",
-      preferred: "shoop da woop",
-      salary: "$2",
-      description: "chyea boi!",
-      time: "huh?",
-      company_size: 2
     })
-    .save().then(function(position){
-      // console.log('position created! ' + position.id);
-    });
+    .fetch()
+    .then(function(employer) {
 
-    new Position({
-      employers_id: employer1,
-      position: "Half Stack",
-      location: "SF",
-      required: "half skillz dat killz",
-      preferred: "half shoop da woop",
-      salary: "$1",
-      description: "kinda boi!",
-      time: "huh?",
-      company_size: 1
-    })
-    .save().then(function(position2){
-      // console.log('position created! ' + position2.id);
-    });
+      if (!employer) {
+        new Employer({
+          email: 'test@test.com',
+          password: testPW
+        })
+        .save()
+        .then(function(newEmployer) {
+          // console.log("employer created! " + newEmployer.id);
+          employer = newEmployer;
+        })
+      }
+
+      new Position({
+        employers_id: employer.id,
+        position: "Full Stack Software Engineer",
+        location: "San Francisco, CA",
+        required: "Ruby on Rails, Postgres",
+        preferred: "Bookshelf, JavaScript, AngularJS",
+        salary: "$100k",
+        description: "Our company needs a full stack software engineer for our B2B platform.",
+        time: "Full-Time",
+        company_size: '100+'
+      })
+      .save().then(function(position){
+        // console.log('position created! ' + position.id);
+        newPosition = position;
+
+        new Developer({
+          fname: 'Kyser',
+          lname: 'Soze'
+        })
+          .fetch()
+          .then(function(developer) {
+            if (!developer) {
+              new Developer({
+                fname: 'Kyser',
+                lname: 'Soze',
+                email: 'example@developer.com',
+                location: 'San Francisco, CA'
+              })
+              .save()
+              .then(function(newDeveloper) {
+                console.log("developer created! " + newDeveloper.id);
+                developer = newDeveloper;
+
+                new Match({
+                  developers_id: developer.id,
+                  positions_id: newPosition.id,
+                  developer_interest: true,
+                  employer_interest: true,
+                })
+                .save().then(function(match1){
+                  // console.log('match created! ' + match1.id);
+                });
+              });
+            }
+
+          });
+      });
+
+      new Position({
+        employers_id: employer.id,
+        position: "Front End Web Developer",
+        location: "San Francisco, CA",
+        required: "HTML5, CSS3, JavaScript, Embedded Ruby",
+        preferred: "jQuery, Bootstrap",
+        salary: "$95k",
+        description: "Our company needs a front end web developer for our B2B platform.",
+        time: "Full-Time",
+        company_size: '100+'
+      })
+      .save().then(function(position2){
+        // console.log('position created! ' + position2.id);
+      });
   });
 
   new Employer({
     email: 'test2@test.com',
-    password: testPW
-  }).save().then(function(employer2) {
-    // console.log('employer created! ' + employer2.id);
-    employer2 = employer2.id;
-    new Position({
-      employers_id: employer2,
-      position: "UX Design",
-      location: "SF",
-      required: "what?",
-      preferred: "lame",
-      salary: "$0.25",
-      description: "poop",
-      time: "huh?",
-      company_size: 2
     })
-    .save().then(function(position){
-      // console.log('position created! ' + position.id);
-    });
+    .fetch()
+    .then(function(employer) {
 
-    new Position({
-      employers_id: employer2,
-      position: "Product Manager",
-      location: "SF",
-      required: "lol nothing",
-      preferred: "zing",
-      salary: "$0.001",
-      description: "kinda boi!",
-      time: "huh?",
-      company_size: 1
-    })
-    .save().then(function(position2){
-      // console.log('position created! ' + position2.id);
-      new Developer({
-        fname: 'Kyser',
-        lname: 'Soze',
-        location: 'Unknown'
+      if (!employer) {
+        new Employer({
+          email: 'test2@test.com',
+          password: testPW
+        }).save().then(function(newEmployer) {
+          // console.log("employer created! " + newEmployer.id);
+          employer = newEmployer;
+        })
+      }
+
+      new Position({
+        employers_id: employer.id,
+        position: "Full Stack Software Engineer",
+        location: "San Francisco, CA",
+        required: "Node.js, Express, Mongodb",
+        preferred: "Gulp.js, Mocha, Protractor",
+        salary: "$115k",
+        description: "Our company needs a full stack software engineer for our consumer facing platform.",
+        time: "Full-Time",
+        company_size: '60+'
       })
-      .save().then(function(developer){
-      // console.log('developer created! ' + developer.id);
-      new Match({
-        developers_id: developer.id,
-        positions_id: position2.id,
-        developer_interest: true,
-        employer_interest: true,
-      })
-      .save().then(function(match1){
-        // console.log('match created! ' + match1.id);
+      .save().then(function(position){
+        // console.log('position created! ' + position.id);
       });
+
+      new Position({
+        employers_id: employer.id,
+        position: "Front End Web Developer",
+        location: "San Francisco, CA",
+        required: "AngularJS",
+        preferred: "Bootstrap",
+        salary: "$97k",
+        description: "Our company needs a front end web developer for our consumer facing platform.",
+        time: "Full-Time",
+        company_size: '60+'
       })
-
-
-    });
+      .save().then(function(position2){
+        // console.log('position created! ' + position2.id);
+      });
   });
-});
-
 };
