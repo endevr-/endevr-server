@@ -28,7 +28,7 @@ describe('POST Requests', function() {
 
     describe('/profile', function() {
 
-      it('/profile should update your profile info', function(done) {
+      it('should update your profile info', function(done) {
         request(endevrServer)
           .post('/api/developers/profile'+input.devqueryParams)
           .send({ category: 'skills',
@@ -41,7 +41,7 @@ describe('POST Requests', function() {
 
     describe('JWT Verification', function() {
 
-      it('/matches should not update info when no JWT is present', function(done) {
+      it('should not update info when no JWT is present', function(done) {
         request(endevrServer)
           .post('/api/developers/matches')
           .send({ posid: input.empposid,
@@ -53,7 +53,7 @@ describe('POST Requests', function() {
           });
       });
 
-      it('/profile should not update info when no JWT is present', function(done) {
+      it('should not update info when no JWT is present', function(done) {
         request(endevrServer)
           .post('/api/developers/profile')
           .send({ category: 'skills',
@@ -76,7 +76,7 @@ describe('POST Requests', function() {
 
     describe('/matches', function() {
 
-      it('/matches should tell you if there is a match', function(done) {
+      it('should tell you if there is a match', function(done) {
         request(endevrServer)
           .post('/api/employers/matches'+input.empqueryParams)
           .send({ devid: input.devid,
@@ -96,7 +96,7 @@ describe('POST Requests', function() {
 
     describe('/profile', function() {
 
-      it('/profile should update your profile info', function(done) {
+      it('should update your profile info', function(done) {
         request(endevrServer)
           .post('/api/employers/profile'+input.empqueryParams)
           .send({ category: 'name',
@@ -109,7 +109,7 @@ describe('POST Requests', function() {
 
     describe('/login', function() {
 
-      it('/login should log in an existing employer', function(done) {
+      it('should log in an existing employer', function(done) {
         request(endevrServer)
           .post('/api/employers/login')
           .send({
@@ -133,7 +133,7 @@ describe('POST Requests', function() {
 
     describe('/new', function() {
 
-      it('/new should create a new employer', function(done) {
+      it('should create a new employer', function(done) {
         request(endevrServer)
           .post('/api/employers/new')
           .send({
@@ -154,7 +154,7 @@ describe('POST Requests', function() {
 
     describe('/positions', function() {
 
-      it('/positions should create a new position', function(done) {
+      it('should create a new position', function(done) {
         request(endevrServer)
           .post('/api/employers/positions'+input.empqueryParams)
           .send({

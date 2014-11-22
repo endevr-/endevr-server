@@ -169,7 +169,7 @@ describe('GET Requests', function() {
 
     describe('/profile', function() {
 
-      it("/profile should return a developer's profile", function(done) {
+      it("should return a developer's profile", function(done) {
         request(endevrServer)
           .get('/api/employers/profile'+input.empqueryParams)
           .set('Accept', 'application/json')
@@ -187,7 +187,7 @@ describe('GET Requests', function() {
 
     describe('/matches', function() {
 
-      it("/matches should return a employer's matches", function(done) {
+      it("should return a employer's matches", function(done) {
         request(endevrServer)
           .get('/api/employers/matches'+input.empqueryParams+input.empqueryPos)
           .set('Accept', 'application/json')
@@ -205,7 +205,7 @@ describe('GET Requests', function() {
 
     describe('/positions', function() {
 
-      it('/positions should provide list of jobs belonging to an employer', function(done) {
+      it('should provide list of jobs belonging to an employer', function(done) {
         request(endevrServer)
           .get('/api/employers/positions'+input.empqueryParams)
           .set('Accept', 'application/json')
