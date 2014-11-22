@@ -10,10 +10,10 @@ endevrServer.use(bodyParser.json());
 require('./../../routes/index')(endevrServer);
 
 // find the id of the developer you want to test.
-var id = 58;
-var jwt_token = jwt.sign({ id: id}, 'lalala');
+var devid = 58;
+var devjwt_token = jwt.sign({ id: devid}, 'lalala');
 
-var queryParams = '?jwt_token=' + jwt_token + '&usertype=dev';
+var devqueryParams = '?jwt_token=' + devjwt_token + '&usertype=dev';
 
 describe('GET', function() {
 
@@ -55,7 +55,7 @@ describe('GET', function() {
 
     it('/cards should return list of developers', function(done) {
       request(endevrServer)
-        .get('/api/developers/cards'+queryParams)
+        .get('/api/developers/cards'+devqueryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
@@ -79,14 +79,14 @@ describe('GET', function() {
 
     it("/profile should return a developer's profile", function(done) {
       request(endevrServer)
-        .get('/api/developers/profile'+queryParams)
+        .get('/api/developers/profile'+devqueryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
           bodyId = res.body.id;
         })
         .end(function(err, res) {
-          bodyId.should.equal(id);
+          bodyId.should.equal(devid);
           done();
         });
     });
@@ -103,7 +103,7 @@ describe('GET', function() {
 
     it("/matches should return a developer's matches", function(done) {
       request(endevrServer)
-        .get('/api/developers/matches'+queryParams)
+        .get('/api/developers/matches'+devqueryParams)
         .set('Accept', 'application/json')
         .expect(200)
         .expect(function(res) {
