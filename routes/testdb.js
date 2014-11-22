@@ -9,6 +9,13 @@ var newPosition;
 
 module.exports = function(app) {
 
+  knex('positions')
+    .whereNotIn('position', ['Full Stack Software Engineer 1'])
+    .del()
+    .then(function(result) {
+      // console.log("deleted positions except for 1");
+    });
+
   knex('matches')
     .del().then(function(result) {
       // console.log("deleted matches");
@@ -42,7 +49,7 @@ module.exports = function(app) {
 
       new Position({
         employers_id: employer.id,
-        position: "Full Stack Software Engineer",
+        position: "Full Stack Software Engineer 1",
         location: "San Francisco, CA",
         required: "Ruby on Rails, Postgres",
         preferred: "Bookshelf, JavaScript, AngularJS",
@@ -56,7 +63,7 @@ module.exports = function(app) {
           if (!position) {
             new Position({
               employers_id: employer.id,
-              position: "Full Stack Software Engineer",
+              position: "Full Stack Software Engineer 1",
               location: "San Francisco, CA",
               required: "Ruby on Rails, Postgres",
               preferred: "Bookshelf, JavaScript, AngularJS",
@@ -118,7 +125,7 @@ module.exports = function(app) {
 
       new Position({
         employers_id: employer.id,
-        position: "Front End Web Developer",
+        position: "Front End Web Developer 1",
         location: "San Francisco, CA",
         required: "HTML5, CSS3, JavaScript, Embedded Ruby",
         preferred: "jQuery, Bootstrap",
@@ -150,7 +157,7 @@ module.exports = function(app) {
 
       new Position({
         employers_id: employer.id,
-        position: "Full Stack Software Engineer",
+        position: "Full Stack Software Engineer 2",
         location: "San Francisco, CA",
         required: "Node.js, Express, Mongodb",
         preferred: "Gulp.js, Mocha, Protractor",
@@ -165,7 +172,7 @@ module.exports = function(app) {
 
       new Position({
         employers_id: employer.id,
-        position: "Front End Web Developer",
+        position: "Front End Web Developer 2",
         location: "San Francisco, CA",
         required: "AngularJS",
         preferred: "Bootstrap",

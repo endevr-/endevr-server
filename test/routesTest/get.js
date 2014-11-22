@@ -16,8 +16,10 @@ var devqueryParams = '?jwt_token=' + devjwt_token + '&usertype=dev';
 
 // find the id of the employer you want to test.
 var empid = 127;
+var empposid = 717;
 var empjwt_token = jwt.sign({ id: empid}, 'lalala');
 var empqueryParams = '?jwt_token=' + empjwt_token + '&usertype=emp';
+var empqueryPos = '&posid='+empposid;
 
 describe('GET', function() {
 
@@ -137,80 +139,80 @@ describe('GET', function() {
 
   describe('/api/employers', function() {
 
-    // var body;
-    // var bodyId;
-    //
-    // it('/cards should return list of developers for an employer', function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/cards'+empqueryParams)
-    //     .set('Accept', 'application/json')
-    //     .expect(200)
-    //     .expect(function(res) {
-    //       body = res.body;
-    //     })
-    //     .end(function(err, res) {
-    //       body.should.have.lengthOf(1);
-    //       done();
-    //     })
-    // });
-    //
-    // it('/cards should not provide info when no JWT is present', function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/cards')
-    //     .set('Accept', 'text/html: charset=utf-8')
-    //     .end(function(err, res) {
-    //       res.headers.location.should.equal('/unauthorized');
-    //       done();
-    //     });
-    // });
-    //
-    // it("/profile should return a developer's profile", function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/profile'+empqueryParams)
-    //     .set('Accept', 'application/json')
-    //     .expect(200)
-    //     .expect(function(res) {
-    //       bodyId = res.body.id;
-    //     })
-    //     .end(function(err, res) {
-    //       bodyId.should.equal(empid);
-    //       done();
-    //     });
-    // });
-    //
-    // it('/profile should not provide info when no JWT is present', function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/profile')
-    //     .set('Accept', 'text/html: charset=utf-8')
-    //     .end(function(err, res) {
-    //       res.headers.location.should.equal('/unauthorized');
-    //       done();
-    //     });
-    // });
-    //
-    // it("/matches should return a employer's matches", function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/matches'+empqueryParams)
-    //     .set('Accept', 'application/json')
-    //     .expect(200)
-    //     .expect(function(res) {
-    //       body = res.body;
-    //     })
-    //     .end(function(err, res) {
-    //       body.length.should.equal(1);
-    //       done();
-    //     });
-    // });
-    //
-    // it('/matches should not provide info when no JWT is present', function(done) {
-    //   request(endevrServer)
-    //     .get('/api/employers/matches')
-    //     .set('Accept', 'text/html: charset=utf-8')
-    //     .end(function(err, res) {
-    //       res.headers.location.should.equal('/unauthorized');
-    //       done();
-    //     });
-    // });
+    var body;
+    var bodyId;
+
+    it('/cards should return list of developers for an employer', function(done) {
+      request(endevrServer)
+        .get('/api/employers/cards'+empqueryParams+empqueryPos)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .expect(function(res) {
+          body = res.body;
+        })
+        .end(function(err, res) {
+          body.should.have.lengthOf(0);
+          done();
+        })
+    });
+
+    it('/cards should not provide info when no JWT is present', function(done) {
+      request(endevrServer)
+        .get('/api/employers/cards')
+        .set('Accept', 'text/html: charset=utf-8')
+        .end(function(err, res) {
+          res.headers.location.should.equal('/unauthorized');
+          done();
+        });
+    });
+
+    it("/profile should return a developer's profile", function(done) {
+      request(endevrServer)
+        .get('/api/employers/profile'+empqueryParams)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .expect(function(res) {
+          bodyId = res.body.id;
+        })
+        .end(function(err, res) {
+          bodyId.should.equal(empid);
+          done();
+        });
+    });
+
+    it('/profile should not provide info when no JWT is present', function(done) {
+      request(endevrServer)
+        .get('/api/employers/profile')
+        .set('Accept', 'text/html: charset=utf-8')
+        .end(function(err, res) {
+          res.headers.location.should.equal('/unauthorized');
+          done();
+        });
+    });
+
+    it("/matches should return a employer's matches", function(done) {
+      request(endevrServer)
+        .get('/api/employers/matches'+empqueryParams+empqueryPos)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .expect(function(res) {
+          body = res.body;
+        })
+        .end(function(err, res) {
+          body.length.should.equal(1);
+          done();
+        });
+    });
+
+    it('/matches should not provide info when no JWT is present', function(done) {
+      request(endevrServer)
+        .get('/api/employers/matches')
+        .set('Accept', 'text/html: charset=utf-8')
+        .end(function(err, res) {
+          res.headers.location.should.equal('/unauthorized');
+          done();
+        });
+    });
 
   });
 
