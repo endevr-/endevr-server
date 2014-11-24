@@ -88,7 +88,7 @@ var getOauthToken = function(req, res, next){
           github: null
         })
         .save().then(function(developer){
-          console.log('NEW USER SAVED!');
+          // console.log('NEW USER SAVED!');
 
           jwt_token = jwt.sign({ id: developer.id}, 'lalala');
 

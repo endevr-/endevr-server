@@ -1,8 +1,10 @@
-var should  = require('should');
-var request = require('supertest');
+var should       = require('should');
+var request      = require('supertest');
 
 var endevrServer = require('./../testServer');
-var input = require('./../testConfig');
+var input        = require('./../testConfig');
+
+var knex         = require('./../../config/knex.js');
 
 describe('POST Requests', function() {
   describe('/api/developers', function() {
@@ -73,6 +75,27 @@ describe('POST Requests', function() {
 
     var jwt;
     var id;
+
+    afterEach(function(done) {
+      knex('employers')
+        .whereNotIn('email', ['test@test.com', 'test2@test.com'])
+        .del()
+        .then(function(result) {
+            // console.log("deleted employers except for 2");
+            knex('positions')
+              .whereNotIn('position', ['Full Stack Software Engineer 1', 'Front End Web Developer 1', 'Full Stack Software Engineer 2', 'Front End Web Developer 2'])
+              .del()
+              .then(function(result) {
+                // console.log("deleted positions except for the original 4");
+                knex('matches')
+                  .whereNotIn('developers_id', [1]).orWhereNotIn('positions_id', [1])
+                  .del().then(function(result) {
+                    // console.log("deleted matches except for 1");
+                    done();
+                });
+              });
+        });
+    });
 
     describe('/matches', function() {
 
