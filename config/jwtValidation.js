@@ -8,16 +8,16 @@ var jwtValidation = function(req, res, next) {
   var id;
   var error;
 
-  console.log('token: ' + token);
-  console.log('type: ' + usertype);
+  // console.log('token: ' + token);
+  // console.log('type: ' + usertype);
 
 
   if ( token && usertype ) {
     jwt.verify(token, 'lalala', function(err, decoded) {
-      if (err) { 
+      if (err) {
         console.log(err);
         error = err;
-        res.redirect('/unauthorized'); 
+        res.redirect('/unauthorized');
       } else if (decoded.id) {
         id = decoded.id;
       } else {

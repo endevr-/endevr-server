@@ -17,7 +17,7 @@ $(document).ready(function() {
       var cur_td = $(this);
       var children = cur_td.children();
       // add new td and element if it has a nane
-      if ($(this).data("name") != undefined) {
+      if ($(this).data("name") !== undefined) {
         var td = $("<td></td>", {
           "data-name": $(cur_td).data("name")
         });
@@ -34,15 +34,15 @@ $(document).ready(function() {
     });
 
     $(tr).appendTo($('#tab_logic'));
-    
+
     $(tr).find("td button.row-remove").on("click", function() {
       $(this).closest("tr").remove();
     });
-    
+
     $('tr').find("td button.row-add").on("click", function() {
       var num = this.id;
       num = num.slice(3);
-      var desc = desc + num; 
+      var desc = desc + num;
       var reqs = reqs + num;
       var prefs = prefs + num;
       var loc = '"' + "textarea[name=" + "'" + 'desc' + num + "']" + '"';

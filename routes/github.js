@@ -1,7 +1,7 @@
 var passport  = require('passport');
 var jwt       = require('jsonwebtoken'); //potentially remove
 var Developer = require('../api/developers/developers.model');
-var gitHubKeys = require('../config/example');
+var gitHubKeys = require('../config/GitHubKeys');
 var profileData;
 var jwt_token;
 var userId;

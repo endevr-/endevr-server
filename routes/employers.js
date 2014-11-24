@@ -15,7 +15,7 @@ module.exports = function(app) {
     .where({positions_id: req.query.posid, employer_interest: !null})
     .then(function(cards) {
       var developerIds = [];
-      console.log(cards);
+      // console.log(cards);
       for (var index = 0; index < cards.length; index++) {
         developerIds.push( cards[index].developers_id );
       }
@@ -25,7 +25,7 @@ module.exports = function(app) {
       .from('developers')
       .whereNotIn('id', developerIds)
       .then(function(positionCards) {
-        console.log(positionCards);
+        // console.log(positionCards);
         res.send(positionCards);
       })
     }).catch(function(error) {
@@ -52,7 +52,7 @@ module.exports = function(app) {
       knex.select('*').from('developers')
         .whereIn('id', devArray)
         .then(function(developers){
-          console.log('here!',  developers);
+          // console.log('here!',  developers);
           res.send(developers);
         })
     })
@@ -70,8 +70,8 @@ module.exports = function(app) {
       .then(function(match){
         if (match) {
           developer_interest = match.attributes.developer_interest;
-          console.log('INTEREST: ' + developer_interest);
-          console.log(match);
+          // console.log('INTEREST: ' + developer_interest);
+          // console.log(match);
         }
 
         if(!match){
@@ -91,7 +91,7 @@ module.exports = function(app) {
             positions_id: req.body.posid,
             employer_interest: req.body.empint,
           }).save().then(function(match){
-            console.log(match);
+            // console.log(match);
             if (developer_interest === true && match.attributes.employer_interest === true) {
               res.send({id: match.id, match: true});
             } else {
@@ -129,7 +129,7 @@ module.exports = function(app) {
   // Create Employer
   app.post('/api/employers/new', function(req, res, next) {
     var email = req.body.email.toLowerCase();
-    console.log(email);
+    // console.log(email);
     new Employer({
       email: email
     }).fetch().then(function(employer) {
@@ -155,7 +155,7 @@ module.exports = function(app) {
     .fetch()
     .then(function(employer) {
       if (employer) {
-        console.log(employer);
+        // console.log(employer);
         res.status(200).send(employer);
       } else {
         // No profile Found
@@ -166,13 +166,13 @@ module.exports = function(app) {
 
   // Update Employer Profile
   app.post('/api/employers/profile', verifyJwt, function(req, res, next) {
-    console.log(req.body);
+    // console.log(req.body);
     new Employer({ 'id': req.query.id })
       .fetch()
       .then(function(employer) {
         if(employer) {
 
-          console.log("Hit post to emp profile");
+          // console.log("Hit post to emp profile");
 
           var updatedData = {};
           updatedData[req.body.category] = req.body.data;
@@ -180,10 +180,10 @@ module.exports = function(app) {
           new Employer({ id: req.query.id })
             .save(updatedData)
             .then(function(employer) {
-              console.log('UPDATED!');
+              // console.log('UPDATED!');
               res.send({'success': 'success'});
             }).catch(function(error) {
-              res.send({'etrror': 'error'});
+              res.send({'error': 'error'});
             });
 
         } else {
@@ -201,7 +201,7 @@ module.exports = function(app) {
       employers_id: req.query.id
     })
     .fetchAll().then(function(positions) {
-      positions = positions.models;  
+      positions = positions.models;
       for(var i=0; i<positions.length; i++){
         var emp = positions[i].attributes.employers_id;
         empArray.push(emp);
@@ -214,8 +214,8 @@ module.exports = function(app) {
             var job = positions[i].attributes;
             for(var e = 0; e < employers.length; e++) {
               var employer = employers[e];
-              if(employer['id'] === job['employers_id']) {
-                job['employerInfo'] = employer;
+              if(employer.id === job.employers_id) {
+                job.employerInfo = employer;
                 break;
               }
             }
