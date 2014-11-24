@@ -20,6 +20,11 @@ gulp.task('mocha', function() {
     });
 })
 
+gulp.task('mocha-test', function() {
+  return gulp.src('./test/**/*.js', {read: false})
+    .pipe(mocha());
+})
+
 gulp.task('default', function() {
   // place code for your default task here
 });
@@ -28,7 +33,7 @@ gulp.task('serve', function() {
   nodemon({ script: 'server.js', ext: 'html js' });
 })
 
-gulp.task('test', ['lint', 'mocha'], function () {
+gulp.task('test', ['lint', 'mocha-test'], function () {
   nodemon({ script: 'server.js', ext: 'html js', /*ignore: ['ignored.js']*/ })
     .on('change', ['lint'])
     .on('restart', function () {
